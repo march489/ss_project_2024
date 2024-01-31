@@ -1,0 +1,4 @@
+.clasp*
+appsscript.json
+node_modules/*
+package*
