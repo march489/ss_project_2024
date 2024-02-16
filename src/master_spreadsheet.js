@@ -2,9 +2,9 @@ MasterSpreadsheet = {
     initialized: false,
 
     initialize() {
-        if (!initialized) {
-            this.managerFile = DriveApp.getFileById(MASTER_SPREADSHEET_ID);
-            initialized = true;
+        if (!this.initialized) {
+            this.managerFile = SpreadsheetApp.openById(MASTER_SPREADSHEET_ID);
+            this.initialized = true;
         }
     },
 
@@ -13,34 +13,30 @@ MasterSpreadsheet = {
      * @returns {GoogleAppsScript.Spreadsheet.Sheet}
      */
     getAmazonTestSheet: function () {
-        initialize();
+        this.initialize();
         return this.managerFile.getSheetByName(AMAZON_TEST_SHEET_NAME);
     },
 
     /**
-     * Runs the Amazon Purchases tests on the student file.
+     * 
      * @param {Student} student 
      */
-    runAmazonPurchaseTest: function (student) {
-        initialize();
-        student.logFeedback("Running Amazon Purchases Test...");
-        const results = new Array();
-
-        // delete the test sheet if it exists from previous test
-        let testSheet = this.managerFile.getSheetByName((AMAZON_TEST_SHEET_NAME));
+    createAmazonTestSheet: function (student) {
+        this.initialize();
+        let testSheet = this.managerFile.getSheetByName(AMAZON_TEST_SHEET_NAME);
         if (testSheet) {
             this.managerFile.deleteSheet(testSheet);
         }
 
         try {
             student
-                .driveAppFile
+                .spreadsheet
                 .getSheetByName(AMAZON_SHEET_NAME)
                 .copyTo(this.managerFile)
                 .activate()
                 .setName(AMAZON_TEST_SHEET_NAME);
         } catch (e) {
-            manager
+            this
                 .managerFile
                 .insertSheet()
                 .activate()
@@ -48,12 +44,9 @@ MasterSpreadsheet = {
 
             // TODO: Add error logging service
             console.log(`Student ${student.studentName} has no Amazon Purchases sheet`);
+            student.logFeedback(
+                "**WARNING** Your project does not contain a sheet \
+                named \"AmazonPurchases\". **WARNING**");
         }
-
-        let datetime = student.prepFeedbackFile();
-
-        for (const [name, f] of Object.entries(AmazonPurchasesTest)) {
-            results.push(f.call(student, MasterSpreadsheet.getAmazonTestSheet()));
-        }
-    }
+    },
 }

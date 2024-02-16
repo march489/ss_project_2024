@@ -80,7 +80,7 @@ APTHeaderTests =
      * @param {GoogleAppsScript.Spreadsheet.Sheet}
      * @returns {bool}
      */
-    CheckHeadersBolded: function () {
+    CheckHeadersBolded: function (student, amazonPurchasesSheet) {
         let fontWeights = this.range.getFontWeights().flat();
 
         for (fw of fontWeights) {
@@ -100,7 +100,7 @@ APTHeaderTests =
      * @param {GoogleAppsScript.Spreadsheet.Sheet}
      * @returns {bool}
      */
-    CheckHeadersCentered: function () {
+    CheckHeadersCentered: function (student, amazonPurchasesSheet) {
         let alignments = this.range.getHorizontalAlignments().flat();
 
         for (a of alignments) {

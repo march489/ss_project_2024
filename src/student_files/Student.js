@@ -1,6 +1,7 @@
 class Student {
     constructor(driveAppFile) {
         this.driveAppFile = driveAppFile;
+        this.spreadsheet = SpreadsheetApp.openById(this.driveAppFile.getId());
         this.ExtractDataFromFile();
     }
 
@@ -18,7 +19,7 @@ class Student {
             if (students.length == 0) {
                 throw new StudentNotFoundError(`File with id [${this.driveAppFile.getId()}] has no student owner`, this.driveAppFile);
             } else {
-                this.studentName = students[0].getName();
+                this.name = students[0].getName();
                 this.studentEmail = students[0].getEmail();
             }
 
@@ -26,7 +27,7 @@ class Student {
         else {
             this.turnedInStatus = false;
 
-            this.studentName = fileOwner.getName();
+            this.name = fileOwner.getName();
             this.studentEmail = fileOwner.getEmail();
         }
 
