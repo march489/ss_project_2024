@@ -5,7 +5,7 @@ class FeedbackFile {
 
         let files = DriveApp
             .getFolderById(FEEDBACK_FOLDER_ID)
-            .getFilesByName(this.feedbackFile);
+            .getFilesByName(this.feedbackFileName);
 
         if (files.hasNext()) {
             this.feedbackFile = files.next();
@@ -25,7 +25,7 @@ class FeedbackFile {
      * string so that the master spreadsheet has the same timestamp
      * @param {string} studentName 
      * @param {string} projectUrl 
-     * @returns {string}
+     * @returns {string} -- datetime that test began
      */
     createHeader(studentName, projectUrl) {
         let currentdate = new Date();
@@ -69,7 +69,7 @@ class FeedbackFile {
     /**
      * If the student's feedback file doesn't already exist, this creates and returns
      * it to the caller.
-     * @returns {File}
+     * @returns {GoogleAppsScript.Drive.File}
      */
     #createFeedbackFile() {
         return Drive.getFolderById(FEEDBACK_FOLDER_ID).createFile(this.feedbackFileName);
@@ -82,6 +82,10 @@ class FeedbackFile {
         this.feedbackFile.setContent("");
     }
 
+    /**
+     * Writes the contents of the buffer to the feedback file, 
+     * consuming the buffer. Should only be called at the end of testing.
+     */
     flush() {
         this.feedbackFile.setContent(this.buffer);
         this.buffer = "";

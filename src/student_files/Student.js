@@ -33,7 +33,27 @@ class Student {
         this.feedbackFile = new FeedbackFile(this.studentEmail);
     }
 
-    getFeedbackFile() {
-        return this.feedbackFile;
+    /**
+     * Initializes the feedback file by creating its header.
+     * @returns {string} -- returns the datetime that the test run began
+     */
+    prepFeedbackFile() {
+        return this.feedbackFile.createHeader();
     }
+
+    /**
+     * Writes to the student's feedback file
+     * @param {string} msg 
+     */
+    logFeedback(msg) {
+        this.feedbackFile.log(msg);
+    }
+
+    /**
+     * Clean up testing, flush feedback to .txt file
+     */
+    finalizeTesting() {
+        this.feedbackFile.flush();
+    }
+
 }
