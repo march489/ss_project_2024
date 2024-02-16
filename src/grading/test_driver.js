@@ -6,14 +6,14 @@ TestDriver = {
     runAmazonPurchaseTest: function (student) {
         MasterSpreadsheet.initialize();
         MasterSpreadsheet.createAmazonTestSheet(student);
-        student.logFeedback("Running Amazon Purchases Test...");
+        let datetime = student.prepFeedbackFile();
 
         const results = new Array();
-        let datetime = student.prepFeedbackFile();
+
         // let amazonPurchasesTestSheet = MasterSpreadsheet.getAmazonTestSheet();
 
         for (const [name, f] of Object.entries(AmazonPurchasesTest)) {
-            results.push(f.call(null, student, MasterSpreadsheet.getAmazonTestSheet()));
+            results.push(f.call(AmazonPurchasesTest, student, MasterSpreadsheet.getAmazonTestSheet()));
         }   
 
         student.finalizeTesting();

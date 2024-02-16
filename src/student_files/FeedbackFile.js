@@ -1,5 +1,6 @@
 class FeedbackFile {
     constructor(studentEmail) {
+        this.studentEmail = studentEmail;
         let studentEmailId = studentEmail.match("[^@]+");
         this.feedbackFileName = `${studentEmailId}_feedback.txt`;
 

@@ -2,6 +2,7 @@ class Student {
     constructor(driveAppFile) {
         this.driveAppFile = driveAppFile;
         this.spreadsheet = SpreadsheetApp.openById(this.driveAppFile.getId());
+        this.url = driveAppFile.getUrl();
         this.ExtractDataFromFile();
     }
 
@@ -20,7 +21,7 @@ class Student {
                 throw new StudentNotFoundError(`File with id [${this.driveAppFile.getId()}] has no student owner`, this.driveAppFile);
             } else {
                 this.name = students[0].getName();
-                this.studentEmail = students[0].getEmail();
+                this.email = students[0].getEmail();
             }
 
         }
@@ -28,10 +29,10 @@ class Student {
             this.turnedInStatus = false;
 
             this.name = fileOwner.getName();
-            this.studentEmail = fileOwner.getEmail();
+            this.email = fileOwner.getEmail();
         }
 
-        this.feedbackFile = new FeedbackFile(this.studentEmail);
+        this.feedbackFile = new FeedbackFile(this.email);
     }
 
     /**
@@ -39,7 +40,7 @@ class Student {
      * @returns {string} -- returns the datetime that the test run began
      */
     prepFeedbackFile() {
-        return this.feedbackFile.createHeader();
+        return this.feedbackFile.createHeader(this.name, this.url);
     }
 
     /**
