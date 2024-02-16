@@ -1,10 +1,10 @@
 class Student {
     constructor(driveAppFile) {
         this.driveAppFile = driveAppFile;
-        this.#ExtractDataFromFile();
+        this.ExtractDataFromFile();
     }
 
-    #ExtractDataFromFile() {
+    ExtractDataFromFile() {
         this.fileName = this.driveAppFile.getName();
 
         let fileOwner = this.driveAppFile.getOwner();

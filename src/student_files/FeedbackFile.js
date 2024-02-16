@@ -10,13 +10,13 @@ class FeedbackFile {
         if (files.hasNext()) {
             this.feedbackFile = files.next();
         } else {
-            this.feedbackFile = this.#createFeedbackFile();
+            this.feedbackFile = this.createFeedbackFile();
 
             // set permissions
             this.feedbackFile.addViewer(studentEmail);
         }
 
-        this.#clear();
+        this.clear();
         this.buffer = "";
     }
     /**
@@ -71,14 +71,14 @@ class FeedbackFile {
      * it to the caller.
      * @returns {GoogleAppsScript.Drive.File}
      */
-    #createFeedbackFile() {
+    createFeedbackFile() {
         return Drive.getFolderById(FEEDBACK_FOLDER_ID).createFile(this.feedbackFileName);
     }
 
     /**
      * Clears the feedback file
      */
-    #clear() {
+    clear() {
         this.feedbackFile.setContent("");
     }
 

@@ -1,50 +1,42 @@
-class MasterSpreadsheet {
-    static instance = null;
-    constructor() {
-        this.managerFile = DriveApp.getFileById(MASTER_SPREADSHEET_ID);
-    }
+MasterSpreadsheet = {
+    initialized: false,
 
-    /**
-     * Private method that returns a reference to the master spreadsheet
-     * @returns {MasterSpreadsheet}
-     */
-    static #getInstance() {
-        if (!instance) {
-            instance = new MasterSpreadsheet();
+    initialize() {
+        if (!initialized) {
+            this.managerFile = DriveApp.getFileById(MASTER_SPREADSHEET_ID);
+            initialized = true;
         }
-
-        return instance;
-    }
+    },
 
     /**
      * Accessor for the Master Spreadsheet's Amazon Test Sheet
      * @returns {GoogleAppsScript.Spreadsheet.Sheet}
      */
-    static getAmazonTestSheet() {
-        manager = MasterSpreadsheet.#getInstance();
-        return manager.managerFile.getSheetByName(AMAZON_TEST_SHEET_NAME);
-    }
+    getAmazonTestSheet: function () {
+        initialize();
+        return this.managerFile.getSheetByName(AMAZON_TEST_SHEET_NAME);
+    },
 
     /**
      * Runs the Amazon Purchases tests on the student file.
      * @param {Student} student 
      */
-    static runAmazonPurchaseTest(student) {
-        manager = MasterSpreadsheet.#getInstance();
+    runAmazonPurchaseTest: function (student) {
+        initialize();
         student.logFeedback("Running Amazon Purchases Test...");
         const results = new Array();
 
         // delete the test sheet if it exists from previous test
-        let testSheet = manager.managerFile.getSheetByName((AMAZON_TEST_SHEET_NAME));
+        let testSheet = this.managerFile.getSheetByName((AMAZON_TEST_SHEET_NAME));
         if (testSheet) {
-            manager.managerFile.deleteSheet(testSheet);
+            this.managerFile.deleteSheet(testSheet);
         }
 
         try {
             student
                 .driveAppFile
                 .getSheetByName(AMAZON_SHEET_NAME)
-                .copyTo(manager.managerFile)
+                .copyTo(this.managerFile)
                 .activate()
                 .setName(AMAZON_TEST_SHEET_NAME);
         } catch (e) {
