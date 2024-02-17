@@ -7,44 +7,21 @@ AmazonPurchasesTest = {
      * @returns {bool} - setup successful
      */
     setup: function (student, amazonPurchasesSheet) {
-        this.headers = amazonPurchasesSheet
-            .setActiveSelection(AMAZON_HEADER_RANGE)
-            .getValues()
-            .flatMap(row => row.filter(String));
+        this.headerRange = amazonPurchasesSheet
+            .setActiveSelection(AMAZON_HEADER_RANGE);
 
-        let dataRange = amazonPurchasesSheet.setActiveSelection(AMAZON_DATA_RANGE);
-        let unfilteredValues = dataRange.getValues();
-        let numRows = unfilteredValues
+        this.dataRange = amazonPurchasesSheet.setActiveSelection(AMAZON_DATA_RANGE);
+
+        this.numRows = this
+            .dataRange
+            .getValues()
             .map(row => row.filter(String))
             .filter(String)
             .length;
 
-        this.validData = numRows > 0;
+        this.dataIsValid = this.numRows > 0;
 
-        let valueMatrix = dataRange
-            .getValues()
-            .slice(0, numRows);
-
-        let formulaMatrix = dataRange
-            .getFormulas()
-            .slice(0, numRows);
-
-        let cellNameMatrix = [];
-        for (row = 2; row <= 1 + numRows; row++) {
-            let tmp = [];
-
-            for (ch = 65; ch < 72; ch++) {
-                tmp.push(String.fromCharCode(ch) + String(row));
-            }
-
-            cellNameMatrix.push(tmp);
-        }
-
-        console.log(cellNameMatrix);
-        console.log(valueMatrix);
-        console.log(formulaMatrix);
-
-        return this.validData;
+        return this.dataIsValid;
     },
 
     /**
