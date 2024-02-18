@@ -32,7 +32,7 @@ APTHeaderTests =
 
         let [row] = zippedArray;    // TODO fix needless destructuring
         let problemCells = row.filter(([_, color]) => color == '#ffffff');
-        
+
         if (problemCells.length > 0) {
             result = false;
             problemCells.forEach(([cell, _]) => {
@@ -45,84 +45,109 @@ APTHeaderTests =
         return result;
     },
 
-    // /**
-    //  * Checks whether the student's column heading are correct, and if 
-    //  * they're spelled correctly
-    //  * @param {Student} student
-    //  * @param {GoogleAppsScript.Spreadsheet.Sheet}
-    //  * @returns {bool}
-    //  */
-    // CheckColumnHeadings: function (student, amazonPurchasesSheet) {
-    //     const referenceHeadings = [
-    //         'itemname',
-    //         'link',
-    //         'department',
-    //         'deliverydate',
-    //         'unitprice',
-    //         'quantity',
-    //         'subtotal'];
+    /**
+     * Checks whether the student's column heading are correct, and if 
+     * they're spelled correctly
+     * @param {Student} student
+     * @param {GoogleAppsScript.Spreadsheet.Sheet}
+     * @returns {bool}
+     */
+    CheckColumnHeadings: function (student, amazonPurchasesSheet) {
+        let result = true;
+        let errBuffer = "";
+        const referenceHeadings = [
+            'itemname',
+            'link',
+            'department',
+            'deliverydate',
+            'unitprice',
+            'quantity',
+            'subtotal'];
 
-    //     let titleRowHeadings = this.range
-    //         .getValues()
-    //         .flat()
-    //         .map((s) => s.toLowerCase())
-    //         .map(s => s.replaceAll(" ", ""));
+        let titleRowHeadings = amazonPurchasesSheet
+            .getRange(AMAZON_HEADER_RANGE)
+            .getValues()
+            .flat()
+            .map((s) => s.toLowerCase())
+            .map(s => s.replaceAll(" ", ""));
 
-    //     if (referenceHeadings.length != titleRowHeadings.length) {
-    //         student.logFeedback("\t\tFAIL -- Check Column Headings");
-    //         return false;
-    //     }
+        let headerRowsCellNames = Utils.createCellNameArray(1, 1, 1, 7)[0];
+        let zippedArray = Utils.createZippedThreeArrayFlat(headerRowsCellNames, titleRowHeadings, referenceHeadings);
 
-    //     // else keep going
-    //     for (let i = 0; i < referenceHeadings.length; i++) {
-    //         if (referenceHeadings[i] !== titleRowHeadings[i]) {
-    //             student.logFeedback("\t\tFAIL -- Check Column Headings");
-    //             return false;
-    //         }
-    //     }
+        let problemCells = zippedArray
+            .filter(([_, studentHeading, referenceHeading]) => studentHeading !== referenceHeading);
 
-    //     // everything checks out
-    //     student.logFeedback("\t\tPASS -- Check Column Headings");
-    //     return true;
-    // },
+        if (problemCells.length > 0) {
+            result = false;
+            problemCells.forEach(([cell, _0, _1]) => {
+                errBuffer += `\n\t\t\tERROR: The heading in ${cell} is either blank or incorrect. Did you make a typo?`;
+            })
+        }
 
-    // /**
-    //  * Checks if the column headings are all bolded
-    //  * @param {Student} student
-    //  * @param {GoogleAppsScript.Spreadsheet.Sheet}
-    //  * @returns {bool}
-    //  */
-    // CheckHeadersBolded: function (student, amazonPurchasesSheet) {
-    //     let fontWeights = this.range.getFontWeights().flat();
+        let message = `\t\t${result ? "PASS" : "FAIL"}: Did you enter the correct column headings and check the spelling?`;
+        student.logFeedback(message + errBuffer);
+        return result;
+    },
 
-    //     for (fw of fontWeights) {
-    //         if (fw != 'bold') {
-    //             student.logFeedback("\t\tFAIL -- Check Headers Are Bolded");
-    //             return false;
-    //         }
-    //     }
+    /**
+     * Checks if the column headings are all bolded
+     * @param {Student} student
+     * @param {GoogleAppsScript.Spreadsheet.Sheet}
+     * @returns {bool}
+     */
+    CheckHeadersBolded: function (student, amazonPurchasesSheet) {
+        let result = true;
+        let errBuffer = "";
 
-    //     student.logFeedback("\t\tPASS -- Check Headers Are Bolded");
-    //     return true;
-    // },
+        let fontWeights = amazonPurchasesSheet
+            .getRange(AMAZON_HEADER_RANGE)
+            .getFontWeights();
+        let headerRowsCellNames = Utils.createCellNameArray(1, 1, 1, 7);
+        let zippedArray = Utils.createZippedTwoArray(headerRowsCellNames, fontWeights);
 
-    // /**
-    //  * Checks that the column headings are aligned center. 
-    //  * @param {Student} student
-    //  * @param {GoogleAppsScript.Spreadsheet.Sheet}
-    //  * @returns {bool}
-    //  */
-    // CheckHeadersCentered: function (student, amazonPurchasesSheet) {
-    //     let alignments = this.range.getHorizontalAlignments().flat();
+        let [row] = zippedArray;    // TODO fix needless destructuring
+        let problemCells = row.filter(([_, weight]) => weight != 'bold');
 
-    //     for (a of alignments) {
-    //         if (a != 'center') {
-    //             student.logFeedback("\t\tFAIL -- Check Headers Are Centered")
-    //             return false;
-    //         }
-    //     }
+        if (problemCells.length > 0) {
+            result = false;
+            problemCells.forEach(([cell, _]) => {
+                errBuffer += `\n\t\t\tERROR: You didn't bold the header in cell ${cell}`;
+            });
+        }
 
-    //     student.logFeedback("\t\tPASS -- Check Headers Are Centered");
-    //     return true;
-    // }
+        let message = `\t\t${result ? 'PASS' : 'FAIL'}: Did you make the column headings bold?`;
+        student.logFeedback(message + errBuffer);
+        return result;
+    },
+
+    /**
+     * Checks that the column headings are aligned center. 
+     * @param {Student} student
+     * @param {GoogleAppsScript.Spreadsheet.Sheet}
+     * @returns {bool}
+     */
+    CheckHeadersCentered: function (student, amazonPurchasesSheet) {
+        let result = true;
+        let errBuffer = "";
+
+        let alignments = amazonPurchasesSheet
+            .getRange(AMAZON_HEADER_RANGE)
+            .getHorizontalAlignments();
+        let headerRowsCellNames = Utils.createCellNameArray(1, 1, 1, 7);
+        let zippedArray = Utils.createZippedTwoArray(headerRowsCellNames, alignments);
+
+        let [row] = zippedArray;    // TODO fix needless destructuring
+        let problemCells = row.filter(([_, weight]) => weight != 'center');
+
+        if (problemCells.length > 0) {
+            result = false;
+            problemCells.forEach(([cell, _]) => {
+                errBuffer += `\n\t\t\tERROR: The header in cell ${cell} is not aligned center`;
+            });
+        }
+
+        let message = `\t\t${result ? 'PASS' : 'FAIL'}: Are the column headings aligned center?`;
+        student.logFeedback(message + errBuffer);
+        return result;
+    }
 }
