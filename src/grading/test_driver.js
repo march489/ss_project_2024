@@ -1,21 +1,49 @@
 TestDriver = {
+    runTests: function () {
+        if (TESTING_MODE) {
+            let file = DriveApp.getFileById(DEV_STUDENT_FILE_ID);
+            let student = new Student(file);
+            console.log(student.name);
+            TestDriver.GradeStudent(student);
+        }
+    },
+
+    GradeStudent: function (student) {
+        MasterSpreadsheet.initialize();
+        let datetime = student.prepFeedbackFile();
+
+        if (GRADE_AMAZON) {
+            TestDriver.runAmazonPurchasesTest(student);
+        }
+
+        if (GRADE_STUDENT_DATA) {
+            // TODO implement TestDriver.runStudentDataTest(student);
+        }
+
+        if (GRADE_CBOT) {
+            // TODO implement TestDriver.runCbotTest(student);
+        }
+
+        student.finalizeTesting();
+    },
+
     /**
      * Runs the Amazon Purchases tests on the student file.
      * @param {Student} student 
      */
-    runAmazonPurchaseTest: function (student) {
-        MasterSpreadsheet.initialize();
+    runAmazonPurchasesTest: function (student) {
         MasterSpreadsheet.createAmazonTestSheet(student);
-        let datetime = student.prepFeedbackFile();
-
+        student.logFeedback("\nRunning Amazon Purchases Tests...")
         const results = new Array();
-
-        // let amazonPurchasesTestSheet = MasterSpreadsheet.getAmazonTestSheet();
 
         for (const [name, f] of Object.entries(AmazonPurchasesTest)) {
             results.push(f.call(AmazonPurchasesTest, student, MasterSpreadsheet.getAmazonTestSheet()));
-        }   
+        }
 
-        student.finalizeTesting();
+        let finalResult = results.reduce((bA, bB) => bA && bB, true);
+
+        let message = finalResult ? "ALL TESTS PASS" : "INCOMPLETE";
+        student.logFeedback("Aamazon Purchases Tests: " + message);
+        return finalResult
     }
 }
