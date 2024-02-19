@@ -1,4 +1,8 @@
 TestDriver = {
+    /**
+     * Entry point into the testing script. Uses configs.js and constants.js 
+     * to determine which tests to run on which students. 
+     */
     runTests: function () {
         if (TESTING_MODE) {
             let file = DriveApp.getFileById(DEV_STUDENT_FILE_ID);

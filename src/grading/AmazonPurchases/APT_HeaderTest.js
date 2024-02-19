@@ -1,19 +1,6 @@
 APTHeaderTests =
 {
     /**
-     * Sets up a property called range with the A1:G1 range from the 
-     * amazon purchases test sheet
-     * @param {Student} student
-     * @param {GoogleAppsScript.Spreadsheet.Sheet}
-     * @returns {bool}
-     */
-    // Setup: function (student, amazonPurchasesSheet) {
-    //     amazonPurchasesSheet.activate();
-    //     this.range = amazonPurchasesSheet.getRange('A1:G1');
-    //     return true;
-    // },
-
-    /**
      * Checks whether the student changed the background color on the title row
      * @param {Student} student
      * @param {GoogleAppsScript.Spreadsheet.Sheet}

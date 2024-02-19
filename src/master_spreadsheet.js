@@ -14,7 +14,7 @@ MasterSpreadsheet = {
      */
     getAmazonTestSheet: function () {
         this.initialize();
-        return this.managerFile.getSheetByName(AMAZON_TEST_SHEET_NAME);
+        return this.managerFile.getSheetByName(AMAZON_SHEET_NAME);
     },
 
     /**
@@ -23,7 +23,7 @@ MasterSpreadsheet = {
      */
     createAmazonTestSheet: function (student) {
         this.initialize();
-        let testSheet = this.managerFile.getSheetByName(AMAZON_TEST_SHEET_NAME);
+        let testSheet = this.managerFile.getSheetByName(AMAZON_SHEET_NAME);
         if (testSheet) {
             this.managerFile.deleteSheet(testSheet);
         }
@@ -34,13 +34,13 @@ MasterSpreadsheet = {
                 .getSheetByName(AMAZON_SHEET_NAME)
                 .copyTo(this.managerFile)
                 .activate()
-                .setName(AMAZON_TEST_SHEET_NAME);
+                .setName(AMAZON_SHEET_NAME);
         } catch (e) {
             this
                 .managerFile
                 .insertSheet()
                 .activate()
-                .setName(AMAZON_TEST_SHEET_NAME);
+                .setName(AMAZON_SHEET_NAME);
 
             // TODO: Add error logging service
             console.log(`Student ${student.studentName} has no Amazon Purchases sheet`);

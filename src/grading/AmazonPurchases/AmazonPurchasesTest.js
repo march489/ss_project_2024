@@ -9,7 +9,6 @@ AmazonPurchasesTest = {
      */
     RunHeaderTests: function (student, amazonPurchasesTestSheet) {
         student.logFeedback("\n\tAmazon Purchases Test -- Running Header Tests...\n");
-
         const results = new Array();
         Object.values(APTHeaderTests).forEach((f) => {
             results.push(f.call(this, student, amazonPurchasesTestSheet));
@@ -19,6 +18,20 @@ AmazonPurchasesTest = {
 
         let message = finalResult ? "ALL TESTS PASS" : "INCOMPLETE";
         student.logFeedback("\n\tAmazon Purchases Test -- Header Tests: " + message + '\n');
+        return finalResult;
+    },
+
+    RunDataTableCompleteTests: function(student, amazonPurchasesTestSheet) {
+        student.logFeedback("\n\tAmazon Purchases Test -- Running Data Table Complete Tests...\n");
+        const results = new Array();
+        Object.values(APTDataTableCompleteTests).forEach((f) => {
+            results.push(f.call(this, student, amazonPurchasesTestSheet));
+        });
+
+        let finalResult = results.reduce((b1, b2) => b1 && b2, true);
+
+        let message = finalResult ? "ALL TESTS PASS" : "INCOMPLETE";
+        student.logFeedback("\n\tAmazon Purchases Test -- Data Table Complete Test: " + message + '\n');
         return finalResult;
     }
 }
