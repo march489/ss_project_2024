@@ -21,6 +21,14 @@ AmazonPurchasesTest = {
         return finalResult;
     },
 
+    /**
+     * Runs the Data Table Is Complete test on the amazonPurchasesSheet on the Master Spreadsheet,
+     * which is a copy of the student's version. The reference to the Student is used 
+     * to log feedback
+     * @param {Student} student 
+     * @param {GoogleAppsScript.Spreadsheet.Sheet} amazonPurchasesTestSheet 
+     * @returns {bool} -- did all of the tests pass?
+     */
     RunDataTableCompleteTests: function(student, amazonPurchasesTestSheet) {
         student.logFeedback("\n\tAmazon Purchases Test -- Running Data Table Complete Tests...\n");
         const results = new Array();
