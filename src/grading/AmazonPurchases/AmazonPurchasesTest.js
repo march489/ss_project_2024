@@ -31,7 +31,7 @@ AmazonPurchasesTest = {
         let finalResult = results.reduce((b1, b2) => b1 && b2, true);
 
         let message = finalResult ? "ALL TESTS PASS" : "INCOMPLETE";
-        student.logFeedback("\n\tAmazon Purchases Test -- Data Table Complete Test: " + message + '\n');
+        student.logFeedback("\n\tAmazon Purchases Test -- Data Table Complete Tests: " + message + '\n');
         return finalResult;
     }
 }

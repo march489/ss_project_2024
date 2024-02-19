@@ -67,11 +67,13 @@ APTHeaderTests =
         if (problemCells.length > 0) {
             result = false;
             problemCells.forEach(([cell, _0, _1]) => {
-                errBuffer += `\n\t\t\tERROR: The heading in ${cell} is either blank or incorrect. Did you make a typo?`;
+                errBuffer += `\n\t\t\tERROR: The heading in ${cell} is either blank or incorrect.` 
+                    + `\n\t\t\t       Did you make a typo?`;
             })
         }
 
-        let message = `\t\t${result ? "PASS" : "FAIL"}: Did you enter the correct column headings and check the spelling?`;
+        let message = `\t\t${result ? "PASS" : "FAIL"}: Did you enter the correct column headings` 
+            + `\n\t\t      and check the spelling?`;
         student.logFeedback(message + errBuffer);
         return result;
     },
