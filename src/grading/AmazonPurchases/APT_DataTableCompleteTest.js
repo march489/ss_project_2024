@@ -21,7 +21,8 @@ APTDataTableCompleteTests = {
         let errBuffer = "";
 
         if (!result) {
-            errBuffer += `\n\t\t\tERROR: Expected at least 10 rows of data, but you have ${APTDataTableCompleteTests.numRows} rows`
+            errBuffer += `\n\t\t\tERROR: Expected at least 10 rows of data, but you have ` 
+                + `${APTDataTableCompleteTests.numRows - 1} ${APTDataTableCompleteTests.numRows - 1 == 1 ? "row" : "rows"}`;
         }
         let message = `\t\t${result ? "PASS" : "FAIL"}: Do you have at least 10 rows of data in your table,`
             + `\n\t\t      excluding headers?`;
@@ -246,9 +247,42 @@ APTDataTableCompleteTests = {
 
         }
 
-        let message = `\t\t${result ? 'PASS' : 'FAIL'}: Are all monetary values formatted as currency` 
+        let message = `\t\t${result ? 'PASS' : 'FAIL'}: Are all monetary values formatted as currency`
             + `\n\t\t      with two decimal places?`;
 
+        student.logFeedback(message + errBuffer);
+        return result;
+    },
+
+    /**
+     * Checks if the table is sorted high to low by unit price (column E)
+     * @param {Student} student 
+     * @param {GoogleAppsScript.Spreadsheet.Sheet} amazonPurchasesTestSheet 
+     * @returns {bool} -- is the table sorted?
+     */
+    CheckSorted: function (student, amazonPurchasesTestSheet) {
+        let result = true;
+        let errBuffer = "";
+
+        if (APTDataTableCompleteTests.numRows <= 1) {
+            result = false;
+            errBuffer = "\n\t\t\tERROR: You have no data";
+        } else {
+            let unitPrices = amazonPurchasesTestSheet
+                .getRange(2, 5, APTDataTableCompleteTests.numRows - 1, 1)
+                .getValues()
+                .flat();
+
+            for (let index = 0; index < APTDataTableCompleteTests.numRows - 2; index++) {
+                if (result) {
+                    result &= unitPrices[index] >= unitPrices[index + 1];
+                } else {
+                    break;
+                }
+            }
+        }
+
+        let message = `\t\t${result ? 'PASS' : 'FAIL'}: Is the data table sorted high to low by unit price?`
         student.logFeedback(message + errBuffer);
         return result;
     }
