@@ -51,6 +51,47 @@ APTDataTableCompleteTests = {
         let message = `\t\t${result ? "PASS" : "FAIL"}: Is the data table completely filled in with no empty cells?`;
         student.logFeedback(message + errBuffer);
         return result;
+    },
 
+    CheckHyperlinks: function (student, amazonPurchasesTestSheet) {
+        let result = true;
+        let errBuffer = "";
+
+        let hyperlinkRange = amazonPurchasesTestSheet
+            .getRange(2, 2, APTDataTableCompleteTests.numRows - 1, 1);
+
+        let valueMatrix = hyperlinkRange.getValues();
+        let formulaMatrix = hyperlinkRange.getFormulas();
+        let cellNameMatrix = Utils.createCellNameArray(2, 2, APTDataTableCompleteTests.numRows - 1, 1);
+        let zippedArray = Utils
+            .createZippedThreeArrayNested(cellNameMatrix, valueMatrix, formulaMatrix)
+            .map(([row]) => row);
+
+        // check the text
+        let incorrectLinkTextCells = zippedArray
+            .map(([cellName, linkTest, _]) => [cellName, linkTest.trim().toLowerCase()])
+            .filter(([_name, linkText]) => linkText !== 'link');
+
+        if (incorrectLinkTextCells.length > 0) {
+            result = false;
+            incorrectLinkTextCells.forEach(([cellName, linkText]) => {
+                errBuffer += `\n\t\t\tERROR: Cell ${cellName}'s hyperlink text should read \"Link\", but instead it reads ${linkText}`;
+            })
+        }
+
+        let incorrectFormulaCells = zippedArray
+            .map(([cellName, _, formula]) => [cellName, formula.trim().toLowerCase()])
+            .filter(([_, formula]) => !formula.startsWith("=hyperlink("));
+
+        if (incorrectFormulaCells.length > 0) {
+            result = false;
+            incorrectFormulaCells.forEach(([cellName, _formula]) => {
+                errBuffer += `\n\t\t\tERROR: Cell ${cellName}'s hyperlink was not created with a HYPERLINK() function`
+            })
+        }
+
+        let message = `\t\t${result ? "PASS": "FAIL"}: Is each in Column B created with the =HYPERLINK() function, and does the hyperlink text read "Link"?`;
+        student.logFeedback(message + errBuffer);
+        return result;
     }
 }
