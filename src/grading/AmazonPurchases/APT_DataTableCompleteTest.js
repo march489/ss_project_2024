@@ -56,12 +56,12 @@ APTDataTableCompleteTests = {
             let cellNameMatrix = Utils.createCellNameArray(2, 1, APTDataTableCompleteTests.numRows - 1, 7);
             let zippedArray = Utils.createZippedTwoArray(cellNameMatrix, valueMatrix);
             let emptyCells = zippedArray
-                .map(row => row.filter(([_, val]) => val.toString().trim() === "").map(([cell, _]) => cell))
+                .map(row => row.filter(([_, val]) => String(val) === "").map(([cell, _]) => cell))
                 .flat();
 
             if (emptyCells.length > 1) {
                 result = false;
-                errBuffer = `\n\t\t\tERROR: The following cells are missing data: ${emptyCells}`;
+                errBuffer = `\n\t\t\tERROR: The following cells are missing data: ${emptyCells.join(", ")}`;
             }
         }
 

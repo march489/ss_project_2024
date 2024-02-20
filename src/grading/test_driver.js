@@ -29,6 +29,10 @@ TestDriver = {
             if (GRADE_D_PERIOD) {
                 TestDriver.GradeSection(D_FOLDER_ID);
             }
+
+            if (GRADE_B_TA) {
+                TestDriver.GradeSection(B_TA_FOLDER_ID);
+            }
         }
     },
 
