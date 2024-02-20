@@ -56,6 +56,10 @@ class Student {
      */
     finalizeTesting() {
         this.feedbackFile.flush();
+        this.spreadsheet
+            .getSheetByName(CHECKLIST_SHEET_NAME)
+            .getRange(FEEDBACK_FILE_STAMP_CELL)
+            .setFormula(`=HYPERLINK("${this.feedbackFile.feedbackFile.getUrl()}", "see detailed feedback")`);
     }
 
 }

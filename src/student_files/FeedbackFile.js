@@ -12,9 +12,6 @@ class FeedbackFile {
             this.feedbackFile = files.next();
         } else {
             this.feedbackFile = this.createFeedbackFile();
-
-            // set permissions
-            this.feedbackFile.addViewer(studentEmail);
         }
 
         this.clear();
@@ -49,16 +46,6 @@ class FeedbackFile {
         return datetime;
     }
 
-    // TODO: add StampFeedbackFileUrl --> writes to master spreadsheet
-    // StampFeedbackFileLink: function()
-    // {
-    //     let url = Logger.pFeedbackFile.getUrl();
-    //     TestDriver.pSpreadsheet.getSheetByName("Checklist")
-    //     .getRange('G1')
-    //     .setFontSize(11)
-    //     .setFormula('=HYPERLINK("' + url +'", "see detailed feedback")');
-    // }
-
     /**
      * Appends the message to the buffer
      * @param {string} msg 
@@ -73,14 +60,25 @@ class FeedbackFile {
      * @returns {GoogleAppsScript.Drive.File}
      */
     createFeedbackFile() {
-        return Drive.getFolderById(FEEDBACK_FOLDER_ID).createFile(this.feedbackFileName);
+        let file = DriveApp.getFolderById(FEEDBACK_FOLDER_ID).createFile(this.feedbackFileName, EMPTY_CONTENT);
+        Drive.Permissions.insert(
+            {
+                'role': 'reader',
+                'type': 'user',
+                'value': this.studentEmail
+            },
+            file.getId(),
+            {
+                'sendNotificationEmails': false
+            });
+        return file;
     }
 
     /**
      * Clears the feedback file
      */
     clear() {
-        this.feedbackFile.setContent("");
+        this.feedbackFile.setContent(EMPTY_CONTENT);
     }
 
     /**
@@ -89,6 +87,6 @@ class FeedbackFile {
      */
     flush() {
         this.feedbackFile.setContent(this.buffer);
-        this.buffer = "";
+        this.buffer = EMPTY_CONTENT;
     }
 }

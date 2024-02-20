@@ -9,12 +9,42 @@ TestDriver = {
             let student = new Student(file);
             console.log(student.name);
             TestDriver.GradeStudent(student);
+        } else if (GRADE_WHOLE_SECTIONS) {
+            if (GRADE_FIRST_PERIOD) {
+                TestDriver.GradeSection(FIRST_FOLDER_ID);
+            }
+
+            if (GRADE_FIFTH_PERIOD) {
+                TestDriver.GradeSection(FIFTH_FOLDER_ID);
+            }
+
+            if (GRADE_A_PERIOD) {
+                TestDriver.GradeSection(A_FOLDER_ID);
+            }
+
+            if (GRADE_B_PERIOD) {
+                TestDriver.GradeSection(B_FOLDER_ID);
+            }
+
+            if (GRADE_D_PERIOD) {
+                TestDriver.GradeSection(D_FOLDER_ID);
+            }
+        }
+    },
+
+    GradeSection: function(sectionFolderId) {
+        let files = DriveApp.getFolderById(sectionFolderId).getFiles();
+        while(files.hasNext()) {
+            let studentFile = files.next();
+            console.log(studentFile.getName());
+            TestDriver.GradeStudent(new Student(studentFile));
         }
     },
 
     GradeStudent: function (student) {
         MasterSpreadsheet.initialize();
         let datetime = student.prepFeedbackFile();
+        console.log(student.name);
 
         if (GRADE_AMAZON) {
             TestDriver.runAmazonPurchasesTest(student);
@@ -43,6 +73,8 @@ TestDriver = {
         for (const [name, f] of Object.entries(AmazonPurchasesTest)) {
             results.push(f.call(AmazonPurchasesTest, student, MasterSpreadsheet.getAmazonTestSheet()));
         }
+        
+        MasterSpreadsheet.recordAmazonPurchaseTestResults(student, results);
 
         let finalResult = results.reduce((bA, bB) => bA && bB, true);
 

@@ -49,4 +49,25 @@ MasterSpreadsheet = {
                 named \"AmazonPurchases\". **WARNING**");
         }
     },
+
+    recordAmazonPurchaseTestResults: function(student, results) {
+        MasterSpreadsheet.stampAmazonResultStudentChecklist(student, results);
+        // TODO implement stampGradeSheet
+    },
+
+    stampAmazonResultStudentChecklist: function(student, results) {
+        let stampArray = results 
+            .map(result => result ? ["Y"] : ["N"]);
+
+        // adjust for partial development
+        while (stampArray.length < AMAZON_STAMP_RANGE_SIZE) {
+            stampArray.push([""]);
+        }
+        
+        student
+            .spreadsheet
+            .getSheetByName(CHECKLIST_SHEET_NAME)
+            .getRange(AMAZON_CHECKLIST_STAMP_CELL_RANGE)
+            .setValues(stampArray);
+    }
 }
