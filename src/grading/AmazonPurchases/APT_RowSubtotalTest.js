@@ -39,7 +39,7 @@ APTRowRubtotalTests = {
             if (problematicSubtotals.length > 0) {
                 result = false;
                 problematicSubtotals.forEach(([cell, expected, actual]) => {
-                    errBuffer += `\n\t\t\tERROR: In cell ${cell} we expected subtotal ${expected} but got ${actual}`;
+                    errBuffer += `\n\t\t\tERROR: In cell ${cell} we expected subtotal ${Utils.asMoney(expected)} but got ${Utils.asMoney(actual)}`;
                 })
             }
         }
@@ -72,7 +72,7 @@ APTRowRubtotalTests = {
                 .getRange(2, 6, APTDataTableCompleteTests.numRows - 1, 1)
                 .getValues();
             let newQuantities = originalQuantities
-                .map(([quantity]) => [quantity + 1]);
+                .map(([quantity], index) => [quantity * (index + 4) + 1]);
 
             amazonPurchasesTestSheet
                 .getRange(2, 6, APTDataTableCompleteTests.numRows - 1, 1)
@@ -94,7 +94,7 @@ APTRowRubtotalTests = {
             if (incorrectSubtotals.length > 0) {
                 result = false;
                 incorrectSubtotals.forEach(([cell, expected, actual], index) => {
-                    errBuffer += `\n\t\t\tERROR: In ${cell}, updated quantity ${newQuantities[index]} should yield subtotal ${expected}, but instead got ${actual}`;
+                    errBuffer += `\n\t\t\tERROR: In ${cell}, updated quantity ${newQuantities[index]} should yield subtotal ${Utils.asMoney(expected)}, but instead got ${Utils.asMoney(actual)}`;
                 });
             }
 

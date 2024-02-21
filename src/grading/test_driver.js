@@ -7,7 +7,6 @@ TestDriver = {
         if (TESTING_MODE) {
             let file = DriveApp.getFileById(DEV_STUDENT_FILE_ID);
             let student = new Student(file);
-            console.log(student.name);
             TestDriver.GradeStudent(student);
         } else if (GRADE_WHOLE_SECTIONS) {
             if (GRADE_FIRST_PERIOD) {
@@ -33,6 +32,17 @@ TestDriver = {
             if (GRADE_B_TA) {
                 TestDriver.GradeSection(B_TA_FOLDER_ID);
             }
+        } else {
+          // grading specific student
+          let fileName = `${SINGLE_STUDENT_NAME} - Credit Card & Spreadsheet Project 2024`;
+
+          let files = DriveApp.getFilesByName(fileName);
+          if (files.hasNext()) {
+            let student = new Student(files.next());
+            TestDriver.GradeStudent(student);
+          } else {
+            console.log(`No file found for ${SINGLE_STUDENT_NAME}`);
+          }
         }
     },
 

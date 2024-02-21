@@ -57,13 +57,31 @@ AmazonPurchasesTest = {
     student.logFeedback("\n\tAmazon Purchases Test -- Running Row Subtotal Tests...\n");
     const results = new Array();
     Object.values(APTRowRubtotalTests).forEach((f) => {
-      results.push(f.call(this, student, amazonPurchasesTestSheet));
+      if (typeof f === 'function') {
+        results.push(f.call(this, student, amazonPurchasesTestSheet));
+      }
     });
 
     let finalResult = results.reduce((b1, b2) => b1 && b2, true);
 
     let message = finalResult ? "ALL TESTS PASS" : "INCOMPLETE";
     student.logFeedback("\n\tAmazon Purchases Test -- Row Subtotal Tests: " + message + '\n');
+    return finalResult;
+  },
+
+  RunTotalCostTest: function (student, amazonPurchasesTestSheet) {
+    student.logFeedback('\n\tAmazon Purchases Test -- Runing Total Cost Tests...\n');
+    const results = new Array();
+    Object.values(APTTotalCostTests).forEach((f) => {
+      if (typeof f === 'function') {
+        results.push(f.call(this, student, amazonPurchasesTestSheet));
+      }
+    });
+
+    let finalResult = results.reduce((b1, b2) => b1 && b2, true);
+    
+    let message = finalResult ? "ALL TESTS PASS" : "INCOMPLETE";
+    student.logFeedback("\n\tAmazon Purchases Test -- Total Cost Tests: " + message + '\n');
     return finalResult;
   }
 }

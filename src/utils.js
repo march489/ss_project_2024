@@ -1,5 +1,18 @@
 Utils = {
     /**
+     * An easy way to format floats as money in the feedback file.
+     * @param {float} val 
+     * @returns {string} -- value formatted as USD with commas and 2 decimal places. 
+     */
+    asMoney: function (val) {
+        if (val !== null && val !== undefined) {
+            return val.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+        } else {
+            return '$0.00';
+        };
+    },
+
+    /**
      * Creates a zipped array where each entry is a 2-vector consisting of 
      * the cell address, the formula it contains, and its value. 
      * @param {string[][]} cellNameMatrix 
@@ -30,7 +43,7 @@ Utils = {
      * @param {any[]} ls3 
      * @returns 
      */
-    createZippedThreeArrayFlat: function(ls1, ls2, ls3) {
+    createZippedThreeArrayFlat: function (ls1, ls2, ls3) {
         let zippedArray = [];
         ls1.forEach((item, index) => {
             zippedArray.push([item, ls2[index], ls3[index]]);
