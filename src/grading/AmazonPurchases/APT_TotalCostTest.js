@@ -121,7 +121,7 @@ APTTotalCostTests = {
 		}
 
 		let message = `\t\t${result ? 'PASS' : 'FAIL'}: Is total cost calculated with a formula, and does the formula`
-			+ `\n\t\t      still work if the quantities, unit prices, and subtotals change?`;
+			+ `\n\t\t      work if quantities, unit prices, and subtotals change?`;
 		student.logFeedback(message + errBuffer);
 		return result;
 	}

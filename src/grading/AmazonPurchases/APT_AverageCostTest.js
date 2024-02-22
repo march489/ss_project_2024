@@ -58,7 +58,8 @@ AverageCostTests = {
 
             if (!result) {
                 errBuffer = `\n\t\t\tERROR: The average ${Utils.asMoney(actualAverageCostPerItem)} in ${AMAZON_AVERAGE_COST_VALUE_RANGE} is incorrect;`
-                errBuffer += `\n\t\t\t       This is not the average cost of the ${sumQuantities} items in your shopping cart.`
+                errBuffer += `\n\t\t\t       This is not the average cost of the ${sumQuantities} items`;
+                errBuffer += `\n\t\t\t       in your shopping cart.`;
 
                 if (Math.abs(actualAverageCostPerItem - sumSubtotals / (APTDataTableCompleteTests.numRows - 1)) <= TOLERANCE ||
                     amazonPurchasesTestSheet.getRange(AMAZON_AVERAGE_COST_VALUE_RANGE).getFormula().trim().toLowerCase().startsWith('=average(')) {
@@ -67,7 +68,7 @@ AverageCostTests = {
             }
         }
 
-        let message = `\t\t${result ? 'PASS' : 'FAIL'}: Is the value in cell J2 the average cost per item in your cart?`;
+        let message = `\t\t${result ? 'PASS' : 'FAIL'}: Is J2 the average cost per item in your cart?`;
         student.logFeedback(message + errBuffer);
         return result;
     },
@@ -121,8 +122,8 @@ AverageCostTests = {
             result = Math.abs(newExpectedAverageCost - newActualAverageCost) <= TOLERANCE;
 
             if (!result) {
-                errBuffer = `\n\t\t\tERROR: Average cost formula in ${AMAZON_AVERAGE_COST_VALUE_RANGE} is either missing or generates incorrect values with different inputs.`
-                errBuffer += `\n\t\t\t       If you're passing the previous test, it's likely all of your quantities in column F are the same. Change one or two and see if you still pass.`
+                errBuffer = `\n\t\t\tERROR: Average cost formula in ${AMAZON_AVERAGE_COST_VALUE_RANGE} is either missing `
+                    + `\n\t\t\t       or generates incorrect values with different inputs.`;
             }
 
             // reset & clean up
@@ -134,8 +135,9 @@ AverageCostTests = {
                 .setValues(originalQuantities);
         }
 
-        let message = `\t\t${result ? 'PASS' : 'FAIL'}: Is average cost calculated with a formula, and does the formula`
-            + `\n\t\t      still work if the quantities, unit prices, and subtotals change?`;
+        let message = `\t\t${result ? 'PASS' : 'FAIL'}: Is average cost calculated with a formula,`
+            + `\n\t\t     and does the formula still work if quantities,`
+            + `\n\t\t     unit prices, and subtotals change?`;
         student.logFeedback(message + errBuffer);
         return result;
     }
