@@ -39,4 +39,17 @@ StudentDataTests = {
 		student.logFeedback(`\n\tStudent Data Tests -- Total SAT Tests: ${finalResult ? 'ALL TESTS PASS' : 'INCOMPLETE'}\n`);
 		return finalResult;
 	},
+
+	runPassChemistryTests: function (student, studentDataTestSheet) {
+		student.logFeedback("\n\tStudent Data Tests -- Running Pass Chemsitry Tests...\n");
+		const results = new Array();
+		Object.values(PassChemistryTests).forEach((f) => {
+			results.push(f.call(this, student, studentDataTestSheet));
+		});
+
+		let finalResult = results.reduce((b1, b2) => b1 && b2, true);
+
+		student.logFeedback(`\n\tStudent Data Tests -- Pass Chemistry Tests: ${finalResult ? 'ALL TESTS PASS' : 'INCOMPLETE'}\n`);
+		return finalResult;
+	}
 }
