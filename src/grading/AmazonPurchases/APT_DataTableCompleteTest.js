@@ -176,9 +176,9 @@ APTDataTableCompleteTests = {
 
             if (validDates.length > 1) {
                 let firstValidDateCell = validDates[0][0];
-                let defaultFormat = validDates[0][2];
+                let defaultFormat = validDates[0][2].toLowerCase();
                 let datesWithOtherFormats = validDates
-                    .filter(([_c, _d, format]) => format !== defaultFormat);
+                    .filter(([_c, _d, format]) => format.toLowerCase() !== defaultFormat);
 
                 if (datesWithOtherFormats.length > 0) {
                     result = false;

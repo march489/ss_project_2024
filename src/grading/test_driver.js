@@ -84,7 +84,7 @@ TestDriver = {
         student.logFeedback("\nRunning Amazon Purchases Tests...")
         const results = new Array();
 
-        for (const [name, f] of Object.entries(AmazonPurchasesTest)) {
+        for (const [_name, f] of Object.entries(AmazonPurchasesTest)) {
             results.push(f.call(AmazonPurchasesTest, student, MasterSpreadsheet.getAmazonTestSheet()));
         }
 
@@ -102,7 +102,7 @@ TestDriver = {
         student.logFeedback("\nRunning Student Data Tests...");
         const results = new Array();
 
-        for (cont[name, f] of Object.entries(StudentDataTests)) {
+        for (const [_name, f] of Object.entries(StudentDataTests)) {
             results.push(f.call(StudentDataTests, student, MasterSpreadsheet.getStudentDataTestSheet()));
         }
 

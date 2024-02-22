@@ -127,7 +127,7 @@ MasterSpreadsheet = {
 
     createStudentDataTestSheet: function (student) {
         MasterSpreadsheet.initialize();
-        MasterSpreadsheet.copySheetStudentToMaster(STUDENT_DATA_SHEET_NAME);
+        MasterSpreadsheet.copySheetStudentToMaster(student, STUDENT_DATA_SHEET_NAME);
     },
 
     getStudentDataTestSheet: function () {

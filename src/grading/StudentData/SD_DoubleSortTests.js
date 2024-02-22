@@ -41,7 +41,9 @@ DoubleSortTests = {
 
             let cellNameMatrix = Utils.createCellNameArray(2, 1, 30, 1);
 
-            let zippedArray = Utils.createZippedTwoArray(cellNameMatrix, studentSortedNames);
+            let zippedArray = Utils
+                .createZippedTwoArray(cellNameMatrix, studentSortedNames)
+                .map(([row]) => row);
 
             let problematicCells = zippedArray
                 .filter(([_c, name], index) => name != SORTED_NAMES[index])
@@ -53,7 +55,7 @@ DoubleSortTests = {
                 });
             }
 
-            let message = `${result ? 'PASS' : 'FAIL'}: Are students sorted alphabetically first by major and then by name?`;
+            let message = `\t\t${result ? 'PASS' : 'FAIL'}: Are students sorted alphabetically first by major and then by name?`;
             student.logFeedback(message + errBuffer);
             return result;
     }
