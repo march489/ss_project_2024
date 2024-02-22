@@ -58,8 +58,7 @@ SDHeadersTests =
             .getRange(STUDENT_DATA_HEADER_RANGE)
             .getValues()
             .flat()
-            .map((s) => s.toLowerCase())
-            .map(s => s.replaceAll(" ", ""));
+            .map((s) => String(s).toLowerCase().replaceAll(" ", ""));
 
         let headerRowsCellNames = Utils.createCellNameArray(1, 1, 1, 10)[0];
         let zippedArray = Utils.createZippedThreeArrayFlat(headerRowsCellNames, titleRowHeadings, referenceHeadings);
