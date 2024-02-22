@@ -81,28 +81,25 @@ MasterSpreadsheet = {
     },
 
     /**
-     * Accessor for the Master Spreadsheet's Amazon Test Sheet
-     * @returns {GoogleAppsScript.Spreadsheet.Sheet}
-     */
-    getAmazonTestSheet: function () {
-        MasterSpreadsheet.initialize();
-        return this
-            .managerFile
-            .getSheetByName(AMAZON_SHEET_NAME);
-    },
-
-    getStudentDataTestSheet: function () {
-        MasterSpreadsheet.initialize();
-        return MasterSpreadsheet.managerFile.getSheetByName(STUDENT_DATA_SHEET_NAME);
-    },
-
-    /**
      * 
      * @param {Student} student 
      */
     createAmazonTestSheet: function (student) {
         MasterSpreadsheet.initialize();
         MasterSpreadsheet.copySheetStudentToMaster(student, AMAZON_SHEET_NAME);
+    },
+
+    // AMAZON PURCHASES
+
+     /**
+     * Accessor for the Master Spreadsheet's Amazon Test Sheet
+     * @returns {GoogleAppsScript.Spreadsheet.Sheet}
+     */
+     getAmazonTestSheet: function () {
+        MasterSpreadsheet.initialize();
+        return this
+            .managerFile
+            .getSheetByName(AMAZON_SHEET_NAME);
     },
 
     recordAmazonPurchaseTestResults: function (student, results) {
@@ -126,8 +123,38 @@ MasterSpreadsheet = {
             .setValues(stampArray);
     },
 
+    // STUDENT DATA
+
     createStudentDataTestSheet: function (student) {
         MasterSpreadsheet.initialize();
         MasterSpreadsheet.copySheetStudentToMaster(STUDENT_DATA_SHEET_NAME);
-    }
+    },
+
+    getStudentDataTestSheet: function () {
+        MasterSpreadsheet.initialize();
+        return MasterSpreadsheet
+            .managerFile
+            .getSheetByName(STUDENT_DATA_SHEET_NAME);
+    },
+
+    recordStudentDataTestResults: function (student, results) {
+        MasterSpreadsheet.stampStudentDataResultStudentChecklist(student, results);
+        // TODO implement stampGradeSheet
+    },
+
+    stampStudentDataResultStudentChecklist: function (student, results) {
+        let stampArray = results
+            .map(result => result ? ["Y"] : ["N"]);
+
+        // adjust for partial development
+        while (stampArray.length < STUDENT_DATA_STAMP_RANGE_SIZE) {
+            stampArray.push([""]);
+        }
+
+        student
+            .spreadsheet
+            .getSheetByName(CHECKLIST_SHEET_NAME)
+            .getRange(STUDENT_DATA_STAMP_CELL_RANGE)
+            .setValues(stampArray);
+    },
 }

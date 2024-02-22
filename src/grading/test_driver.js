@@ -33,22 +33,22 @@ TestDriver = {
                 TestDriver.GradeSection(B_TA_FOLDER_ID);
             }
         } else {
-          // grading specific student
-          let fileName = `${SINGLE_STUDENT_NAME} - Credit Card & Spreadsheet Project 2024`;
+            // grading specific student
+            let fileName = `${SINGLE_STUDENT_NAME} - Credit Card & Spreadsheet Project 2024`;
 
-          let files = DriveApp.getFilesByName(fileName);
-          if (files.hasNext()) {
-            let student = new Student(files.next());
-            TestDriver.GradeStudent(student);
-          } else {
-            console.log(`No file found for ${SINGLE_STUDENT_NAME}`);
-          }
+            let files = DriveApp.getFilesByName(fileName);
+            if (files.hasNext()) {
+                let student = new Student(files.next());
+                TestDriver.GradeStudent(student);
+            } else {
+                console.log(`No file found for ${SINGLE_STUDENT_NAME}`);
+            }
         }
     },
 
-    GradeSection: function(sectionFolderId) {
+    GradeSection: function (sectionFolderId) {
         let files = DriveApp.getFolderById(sectionFolderId).getFiles();
-        while(files.hasNext()) {
+        while (files.hasNext()) {
             let studentFile = files.next();
             console.log(studentFile.getName());
             TestDriver.GradeStudent(new Student(studentFile));
@@ -65,7 +65,7 @@ TestDriver = {
         }
 
         if (GRADE_STUDENT_DATA) {
-            // TODO implement TestDriver.runStudentDataTest(student);
+            TestDriver.runStudentDataTests(student);
         }
 
         if (GRADE_CBOT) {
@@ -87,7 +87,7 @@ TestDriver = {
         for (const [name, f] of Object.entries(AmazonPurchasesTest)) {
             results.push(f.call(AmazonPurchasesTest, student, MasterSpreadsheet.getAmazonTestSheet()));
         }
-        
+
         MasterSpreadsheet.recordAmazonPurchaseTestResults(student, results);
 
         let finalResult = results.reduce((bA, bB) => bA && bB, true);
@@ -98,6 +98,18 @@ TestDriver = {
     },
 
     runStudentDataTests: function (student) {
-    
+        MasterSpreadsheet.createStudentDataTestSheet(student);
+        student.logFeedback("\nRunning Student Data Tests...");
+        const results = new Array();
+
+        for (cont[name, f] of Object.entries(StudentDataTests)) {
+            results.push(f.call(StudentDataTests, student, MasterSpreadsheet.getStudentDataTestSheet()));
+        }
+
+        MasterSpreadsheet.recordStudentDataTestResults(student, results);
+
+        let finalResult = results.reduce((bA, bB) => bA && bB, true);
+        student.logFeedback(`Student Data Tests: ${finalResult ? 'ALL TESTS PASS' : 'INCOMPLETE'}`);
+        return finalResult;
     }
 }
