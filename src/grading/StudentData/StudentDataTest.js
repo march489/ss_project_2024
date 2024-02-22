@@ -23,7 +23,20 @@ StudentDataTests = {
 		let finalResult = results.reduce((b1, b2) => b1 && b2, true);
 
 		let message = finalResult ? "ALL TESTS PASS" : "INCOMPLETE";
-		student.logFeedback("\n\tStudent Data Tests -- headers Tests: " + message + '\n');
+		student.logFeedback("\n\tStudent Data Tests -- Headers Tests: " + message + '\n');
+		return finalResult;
+	},
+
+	RunTotalSATTests: function (student, studentDataTestSheet) {
+		student.logFeedback("\n\tStudent Data Tests -- Running Total SAT Tests...\n");
+		const results = new Array();
+		Object.values(TotalSATTests).forEach((f) => {
+			results.push(f.call(this, student, studentDataTestSheet));
+		});
+
+		let finalResult = results.reduce((b1, b2) => b1 && b2, true);
+
+		student.logFeedback(`\n\tStudent Data Tests -- Total SAT Tests: ${finalResult ? 'ALL TESTS PASS' : 'INCOMPLETE'}\n`);
 		return finalResult;
 	},
 }
