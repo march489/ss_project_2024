@@ -64,5 +64,18 @@ StudentDataTests = {
 
 		student.logFeedback(`\n\tStudent Data Tests -- Sibling Tests: ${finalResult ? 'ALL TESTS PASS' : 'INCOMPLETE'}\n`);
 		return finalResult;
+	},
+
+	runAverageGPATests: function (student, studentDataTestSheet) {
+		student.logFeedback("\n\tStudent Data Tests -- Running Average GPA Tests...\n");
+		const results = new Array();
+		Object.values(AverageGPATests).forEach((f) => {
+			results.push(f.call(this, student, studentDataTestSheet));
+		});
+
+		let finalResult = results.reduce((b1, b2) => b1 && b2, true);
+
+		student.logFeedback(`\n\tStudent Data Tests -- Average GPA Tests: ${finalResult ? 'ALL TESTS PASS' : 'INCOMPLETE'}\n`);
+		return finalResult;
 	}
 }
