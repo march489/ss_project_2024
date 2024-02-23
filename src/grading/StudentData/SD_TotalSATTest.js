@@ -62,6 +62,11 @@ TotalSATTests = {
             });
         }
 
+        // clean up & reset
+        studentDataTestSheet
+            .getRange(STUDENT_DATA_SAT_SUBSECTION_RANGE)
+            .setValues(currentSubsectionScores);
+
         let message = `\t\t${result ? 'PASS' : 'FAIL'}: Are total scores calculated with formulas,`
             + `\n\t\t      and do they produce valid results when inputs change?`
         student.logFeedback(message + errBuffer);
