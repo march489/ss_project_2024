@@ -90,5 +90,18 @@ StudentDataTests = {
 
 		student.logFeedback(`\n\tStudent Data Tests -- Lookup Tests: ${finalResult ? 'ALL TESTS PASS' : 'INCOMPLETE'}\n`);
 		return finalResult;
+	},
+
+	runDataValidationTests: function (student, studentDataTestSheet) {
+		student.logFeedback("\n\tStudent Data Tests -- Running Data Validation Tests...\n");
+		const results = new Array();
+		Object.values(DataValidationTests).forEach((f) => {
+			results.push(f.call(this, student, studentDataTestSheet));
+		});
+
+		let finalResult = results.reduce((b1, b2) => b1 && b2, true);
+
+		student.logFeedback(`\n\tStudent Data Tests -- Data Validation Tests: ${finalResult ? 'ALL TESTS PASS' : 'INCOMPLETE'}\n`);
+		return finalResult;
 	}
 }

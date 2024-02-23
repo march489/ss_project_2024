@@ -114,5 +114,6 @@ LookupTests = {
         let errBuffer = result ? '' : '\n\t\t\tERROR: Lookup failed to reject an invalid student name';
         let message = `\t\t${result ? 'PASS' : 'FAIL'}: Does the lookup reject an invalid name?`;
         student.logFeedback(message + errBuffer);
+        return result;
     }
 }
