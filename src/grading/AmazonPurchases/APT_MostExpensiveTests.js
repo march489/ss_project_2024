@@ -67,8 +67,13 @@ MostExpensiveTests = {
 
                 if (actualItem !== expectedItem) {
                     result = false;
-                    errBuffer += `\n\t\t\tERROR: When the most expensive item was ${expectedItem.slice(0,10)}...,`
-                        + `\n\t\t\t      J3 reported the most expensive was ${actualItem.slice(0,10)}...`;
+                    if (actualItem !== '' && actualItem !== undefined) {
+                        errBuffer += `\n\t\t\tERROR: When the most expensive item was ${expectedItem.slice(0, 10)}...,`
+                            + `\n\t\t\t      J3 reported the most expensive was ${String(actualItem).slice(0, 10)}...`;
+                    } else {
+                        errBuffer += `\n\t\t\tERROR: When the most expensive item was ${expectedItem.slice(0, 10)}...,`
+                            + `\n\t\t\t      J3 reported the most expensive was nothing`;
+                    }
                 }
             }
         }

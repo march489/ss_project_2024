@@ -74,8 +74,13 @@ AverageGPATests = {
 
             if (Math.abs(actualValue - expectedValue) > TOLERANCE) {
                 result = false;
-                errBuffer += `\n\t\t\tERROR: Modified formula ${modifiedFormula} should have`
+                if (actualValue !== '' && actualValue !== undefined) {
+                    errBuffer += `\n\t\t\tERROR: Modified formula ${modifiedFormula} should have`
                     + `\n\t\t\t       calculated average (${expectedValue.toFixed(4)}), but instead got (${actualValue.toFixed(4)})`;
+                } else {
+                    errBuffer += `\n\t\t\tERROR: Modified formula ${modifiedFormula} should have`
+                    + `\n\t\t\t       calculated average (${expectedValue.toFixed(4)}), but instead got nothing`;
+                }
             }
         }
 
