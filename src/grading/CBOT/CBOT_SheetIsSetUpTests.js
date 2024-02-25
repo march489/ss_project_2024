@@ -11,10 +11,32 @@ SheetIsSetUpTests = {
         CardBalanceOverTimeTests.numRows = cbotTestSheet
             .getRange(CBOT_DATA_RANGE_START_CELL)
             .getDataRegion()
-            .getValues()
+            .getDisplayValues()
             .map(row => row.filter(String))
             .filter(String)
             .length;
+
+        // if (CardBalanceOverTimeTests.numRows <= 1) {
+        //     CardBalanceOverTimeTests.validData = false;
+        // } else {
+        //     CardBalanceOverTimeTests.validData = true;
+        //     CardBalanceOverTimeTests.unpaidBalances = cbotTestSheet
+        //         .getRange(2, 2, CardBalanceOverTimeTests.numRows - 1, 1)
+        //         .getValues()
+        //         .flat();
+        //     CardBalanceOverTimeTests.minPayments = cbotTestSheet
+        //         .getRange(2, 3, CardBalanceOverTimeTests.numRows - 1, 1)
+        //         .getValues()
+        //         .flat();
+        //     CardBalanceOverTimeTests.balancesAfter = cbotTestSheet
+        //         .getRange(2, 4, CardBalanceOverTimeTests.numRows - 1, 1)
+        //         .getValues()
+        //         .flat();
+        //     CardBalanceOverTimeTests.totalstd = cbotTestSheet
+        //         .getRange(2, 5, CardBalanceOverTimeTests.numRows - 1, 1)
+        //         .getValues()
+        //         .flat();
+        // }
 
         // now the real test
         let result = true;
@@ -249,7 +271,7 @@ SheetIsSetUpTests = {
                 .map(([row]) => row)
                 .filter(([_cell, format]) => format !== '"$"#,##0.00');
 
-            if (badlyFormattedUnitPrices.length > 0) {
+            if (badlyFormattedCells.length > 0) {
                 result = false;
                 badlyFormattedUnitPrices.forEach(([cell, _f]) => {
                     errBuffer += `\n\t\t\tERROR: The unit price in cell ${cell} is not formatted correctly`;
