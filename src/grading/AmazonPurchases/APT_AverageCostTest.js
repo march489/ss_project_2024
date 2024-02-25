@@ -11,7 +11,7 @@ AverageCostTests = {
             .getRange(AMAZON_AVERAGE_COST_LABEL_RANGE)
             .getValue()
             .toLowerCase()
-            .replaceAll(' ', '');
+            .replaceAll(/\s/gi, '');
 
         let result = AVERAGE_COST_LABEL === averageCostLabel;
         if (!result) {

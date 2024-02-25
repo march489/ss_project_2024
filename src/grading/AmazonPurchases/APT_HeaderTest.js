@@ -7,7 +7,6 @@ APTHeaderTests =
      * @returns {bool}
      */
     CheckBackgroundColor: function (student, amazonPurchasesSheet) {
-        // let backgroundColors = this.range.getBackgrounds().flat();
         let result = true;
         let errBuffer = "";
 

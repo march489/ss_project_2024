@@ -157,4 +157,38 @@ MasterSpreadsheet = {
             .getRange(STUDENT_DATA_STAMP_CELL_RANGE)
             .setValues(stampArray);
     },
+
+    // CBOT
+    createCbotTestSheet: function (student) {
+        MasterSpreadsheet.initialize();
+        MasterSpreadsheet.copySheetStudentToMaster(student, CBOT_SHEET_NAME);
+    },
+
+    getCbotTestSheet: function (student) {
+        MasterSpreadsheet.initialize();
+        return MasterSpreadsheet
+            .managerFile
+            .getSheetByName(CBOT_SHEET_NAME);
+    },
+
+    recordCbotTestResults: function (student, results) {
+        MasterSpreadsheet.stampCbotResultStudentChecklist(student, results);
+        // TODO implement stampGradeSheet
+    },
+
+    stampCbotResultStudentChecklist: function (student, results) {
+        let stampArray = results
+            .map(result => result ? ["Y"] : ["N"]);
+
+        // adjust for partial development
+        while (stampArray.length < CBOT_STAMP_RANGE_SIZE) {
+            stampArray.push([""]);
+        }
+
+        student
+            .spreadsheet
+            .getSheetByName(CHECKLIST_SHEET_NAME)
+            .getRange(CBOT_STAMP_CELL_RANGE)
+            .setValues(stampArray);
+    }
 }

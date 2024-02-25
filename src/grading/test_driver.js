@@ -69,7 +69,7 @@ TestDriver = {
         }
 
         if (GRADE_CBOT) {
-            // TODO implement TestDriver.runCbotTest(student);
+            TestDriver.runCbotTests(student);
         }
 
         student.finalizeTesting();
@@ -110,6 +110,24 @@ TestDriver = {
 
         let finalResult = results.reduce((bA, bB) => bA && bB, true);
         student.logFeedback(`Student Data Tests: ${finalResult ? 'ALL TESTS PASS' : 'INCOMPLETE'}`);
+        return finalResult;
+    },
+
+    runCbotTests: function (student) {
+        MasterSpreadsheet.createCbotTestSheet(student);
+        student.logFeedback("\nRunning CBOT Tests...");
+        const results = new Array();
+
+        for (const [_name, f] of Object.entries(CardBalanceOverTimeTests)) {
+            if (typeof f === 'function') {
+                results.push(f.call(StudentDataTests, student, MasterSpreadsheet.getCbotTestSheet()));
+            }
+        }
+
+        MasterSpreadsheet.recordCbotTestResults(student, results);
+
+        let finalResult = results.reduce((bA, bB) => bA && bB, true);
+        student.logFeedback(`CBOT Tests: ${finalResult ? 'ALL TESTS PASS' : 'INCOMPLETE'}`);
         return finalResult;
     }
 }
