@@ -273,7 +273,7 @@ SheetIsSetUpTests = {
 
             if (badlyFormattedCells.length > 0) {
                 result = false;
-                badlyFormattedUnitPrices.forEach(([cell, _f]) => {
+                badlyFormattedCells.forEach(([cell, _f]) => {
                     errBuffer += `\n\t\t\tERROR: The unit price in cell ${cell} is not formatted correctly`;
                 });
             }

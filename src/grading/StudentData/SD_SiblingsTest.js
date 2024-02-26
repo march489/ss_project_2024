@@ -46,10 +46,13 @@ SiblingsTest = {
         const OTHER_MAJORS = ['Art', 'English', 'Physics'];
         let originalFormula = studentDataTestSheet
             .getRange(STUDENT_DATA_SUMIF_RANGE)
-            .getFormula();
+            .getFormula()
+            .toString()
+            .toLowerCase()
+            .replaceAll(/\s/gi, '');
 
         for (major of OTHER_MAJORS) {
-            let modifiedFormula = originalFormula.replaceAll('Math', major);
+            let modifiedFormula = originalFormula.replaceAll('math', major);
             studentDataTestSheet
                 .getRange(STUDENT_DATA_SUMIF_RANGE)
                 .setFormula(modifiedFormula);

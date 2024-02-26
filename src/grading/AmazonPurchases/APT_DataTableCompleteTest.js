@@ -110,7 +110,7 @@ APTDataTableCompleteTests = {
             }
 
             let incorrectFormulaCells = zippedArray
-                .map(([cellName, _, formula]) => [cellName, formula.trim().toLowerCase()])
+                .map(([cellName, _, formula]) => [cellName, formula.trim().toLowerCase().replaceAll(/\s/gi, "")])
                 .filter(([_, formula]) => !formula.startsWith("=hyperlink("));
 
             if (incorrectFormulaCells.length > 0) {
