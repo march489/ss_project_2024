@@ -44,18 +44,21 @@ AverageGPATests = {
             .getValues();
         let years = studentDataTestSheet
             .getRange(STUDENT_DATA_YEAR_RANGE)
-            .getValues();
+            .getValues()
+            .map(([year]) => [String(year).toLowerCase()]);
         let zippedData = Utils
             .createZippedTwoArray(years, gpas)
             .map(([row]) => row);
 
-        const OTHER_CLASSES = ['Sophomore', 'Junior', 'Senior'];
+        const OTHER_CLASSES = ['sophomore', 'junior', 'senior'];
         let originalFormula = studentDataTestSheet
             .getRange(STUDENT_DATA_AVERAGEIF_RANGE)
-            .getFormula();
+            .getFormula()
+            .toLowerCase()
+            .replaceAll(/\s/gi, '');
 
         for (cl of OTHER_CLASSES) {
-            let modifiedFormula = originalFormula.replaceAll('Freshman', cl);
+            let modifiedFormula = originalFormula.replaceAll('freshman', cl);
             studentDataTestSheet
                 .getRange(STUDENT_DATA_AVERAGEIF_RANGE)
                 .setFormula(modifiedFormula);

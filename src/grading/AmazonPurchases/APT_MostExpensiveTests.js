@@ -47,6 +47,9 @@ MostExpensiveTests = {
             let unitPricesRange = amazonPurchasesTestSheet
                 .getRange(2, 5, APTDataTableCompleteTests.numRows - 1, 1);
 
+            let originalPrices = unitPricesRange
+                .getValues();
+
             let rows = APTDataTableCompleteTests.numRows - 1;
 
             let items = amazonPurchasesTestSheet
@@ -76,6 +79,10 @@ MostExpensiveTests = {
                     }
                 }
             }
+
+            // reset & cleanup
+            unitPricesRange
+                .setValues(originalPrices);
         }
 
         let message = `\t\t${result ? 'PASS' : 'FAIL'}: Does the formula adapt as the most expensive item changes?`;
