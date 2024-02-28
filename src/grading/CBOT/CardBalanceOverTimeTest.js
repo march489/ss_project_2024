@@ -32,19 +32,19 @@ CardBalanceOverTimeTests = {
         return finalResult;
     },
 
-    // SummaryStats: function (student, cbotTestSheet) {
-    //     student.logFeedback("\n\tCard Balance Over Time Tests -- Running Summary Stats Tests...\n");
-    //     const results = new Array();
-    //     Object.values(SummaryStatsTests).forEach((f) => {
-    //         if (typeof f === 'function') {
-    //             results.push(f.call(this, student, cbotTestSheet));
-    //         }
-    //     });
+    SummaryStats: function (student, cbotTestSheet) {
+        student.logFeedback("\n\tCard Balance Over Time Tests -- Running Summary Stats Tests...\n");
+        const results = new Array();
+        Object.values(SummaryStatsTests).forEach((f) => {
+            if (typeof f === 'function') {
+                results.push(f.call(this, student, cbotTestSheet));
+            }
+        });
 
-    //     let finalResult = results.reduce((b1, b2) => b1 && b2, true);
+        let finalResult = results.reduce((b1, b2) => b1 && b2, true);
 
-    //     let message = finalResult ? "ALL TESTS PASS" : "INCOMPLETE";
-    //     student.logFeedback("\n\tCard Balance Over Time Tests -- Summary Stats Tests: " + message + '\n');
-    //     return finalResult;
-    // }
+        let message = finalResult ? "ALL TESTS PASS" : "INCOMPLETE";
+        student.logFeedback("\n\tCard Balance Over Time Tests -- Summary Stats Tests: " + message + '\n');
+        return finalResult;
+    }
 }
