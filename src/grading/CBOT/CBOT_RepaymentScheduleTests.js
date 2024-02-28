@@ -245,16 +245,22 @@ RepaymentScheduleTests = {
                     .getRange(CardBalanceOverTimeTests.numRows, 4)
                     .getValue();
 
-                cbotTestSheet
-                    .getRange(CBOT_EXPONENTIAL_FORMULA_CELL)
-                    .autoFill(cbotTestSheet.getRange(3, 2, CardBalanceOverTimeTests.numRows - 2, 1),
-                        SpreadsheetApp.AutoFillSeries.DEFAULT_SERIES);
+                try {
+                    cbotTestSheet
+                        .getRange(CBOT_EXPONENTIAL_FORMULA_CELL)
+                        .autoFill(cbotTestSheet.getRange(3, 2, CardBalanceOverTimeTests.numRows - 2, 1),
+                            SpreadsheetApp.AutoFillSeries.DEFAULT_SERIES);
 
-                let finalBalance = cbotTestSheet
-                    .getRange(CardBalanceOverTimeTests.numRows, 4)
-                    .getValue();
+                    let finalBalance = cbotTestSheet
+                        .getRange(CardBalanceOverTimeTests.numRows, 4)
+                        .getValue();
 
-                if (finalBalance !== originalFinalBalance) {
+                    if (finalBalance !== originalFinalBalance) {
+                        result = false;
+                        errBuffer += `\n\t\t\tERROR: Unpaid balance formula inconsistent or incorrect;`
+                            + `\n\t\t\t       Please check formula in ${CBOT_EXPONENTIAL_FORMULA_CELL} and drag down again.`;
+                    }
+                } catch (e) {
                     result = false;
                     errBuffer += `\n\t\t\tERROR: Unpaid balance formula inconsistent or incorrect;`
                         + `\n\t\t\t       Please check formula in ${CBOT_EXPONENTIAL_FORMULA_CELL} and drag down again.`;
@@ -263,6 +269,54 @@ RepaymentScheduleTests = {
         }
 
         let message = `\t\t${result ? 'PASS' : 'FAIL'}: Is the Unpaid Balance formula calculating interest coreectly?`;
+        student.logFeedback(message + errBuffer);
+        return result;
+    },
+
+    CheckMinPaymentFormula: function (student, cbotTestSheet) {
+        let result = true;
+        let errBuffer = '';
+
+        if (CardBalanceOverTimeTests.numRows <= 1) {
+            result = false;
+            errBuffer += `\n\t\t\tERROR: You don't have enough data`;
+        } else {
+            let balancesAfterFormula = cbotTestSheet
+                .getRange(CBOT_MIN_PAYMENT_FORMULA_CELL)
+                .getFormula();
+
+            if (balancesAfterFormula === '') {
+                result = false;
+                errBuffer += `\n\t\t\tERROR: Cell ${CBOT_MIN_PAYMENT_FORMULA_CELL} is a hard-coded value. Use a formula.`;
+            } else {
+                let originalFinalBalance = cbotTestSheet
+                    .getRange(CardBalanceOverTimeTests.numRows, 4)
+                    .getValue();
+
+                try {
+                    cbotTestSheet
+                        .getRange(CBOT_MIN_PAYMENT_FORMULA_CELL)
+                        .autoFill(cbotTestSheet.getRange(2, 3, CardBalanceOverTimeTests.numRows - 2, 1),
+                            SpreadsheetApp.AutoFillSeries.DEFAULT_SERIES);
+
+                    let finalBalance = cbotTestSheet
+                        .getRange(CardBalanceOverTimeTests.numRows, 4)
+                        .getValue();
+
+                    if (finalBalance !== originalFinalBalance) {
+                        result = false;
+                        errBuffer += `\n\t\t\tERROR: Unpaid balance formula inconsistent or incorrect;`
+                            + `\n\t\t\t       Please check formula in ${CBOT_MIN_PAYMENT_FORMULA_CELL} and drag down again.`;
+                    }
+                } catch (e) {
+                    result = false;
+                    errBuffer += `\n\t\t\tERROR: Unpaid balance formula inconsistent or incorrect;`
+                        + `\n\t\t\t       Please check formula in ${CBOT_MIN_PAYMENT_FORMULA_CELL} and drag down again.`;
+                }
+            }
+        }
+
+        let message = `\t\t${result ? 'PASS' : 'FAIL'}: Is the Minimum Payment formula correct?`;
         student.logFeedback(message + errBuffer);
         return result;
     },
@@ -287,16 +341,22 @@ RepaymentScheduleTests = {
                     .getRange(CardBalanceOverTimeTests.numRows, 4)
                     .getValue();
 
-                cbotTestSheet
-                    .getRange(CBOT_BALANCE_AFTER_FORMULA_CELL)
-                    .autoFill(cbotTestSheet.getRange(2, 4, CardBalanceOverTimeTests.numRows - 1, 1),
-                        SpreadsheetApp.AutoFillSeries.DEFAULT_SERIES);
+                try {
+                    cbotTestSheet
+                        .getRange(CBOT_BALANCE_AFTER_FORMULA_CELL)
+                        .autoFill(cbotTestSheet.getRange(2, 4, CardBalanceOverTimeTests.numRows - 1, 1),
+                            SpreadsheetApp.AutoFillSeries.DEFAULT_SERIES);
 
-                let finalBalance = cbotTestSheet
-                    .getRange(CardBalanceOverTimeTests.numRows, 4)
-                    .getValue();
+                    let finalBalance = cbotTestSheet
+                        .getRange(CardBalanceOverTimeTests.numRows, 4)
+                        .getValue();
 
-                if (finalBalance !== originalFinalBalance) {
+                    if (finalBalance !== originalFinalBalance) {
+                        result = false;
+                        errBuffer += `\n\t\t\tERROR: Unpaid balance formula inconsistent or incorrect;`
+                            + `\n\t\t\t       Please check formula in ${CBOT_BALANCE_AFTER_FORMULA_CELL} and drag down again.`;
+                    }
+                } catch (e) {
                     result = false;
                     errBuffer += `\n\t\t\tERROR: Unpaid balance formula inconsistent or incorrect;`
                         + `\n\t\t\t       Please check formula in ${CBOT_BALANCE_AFTER_FORMULA_CELL} and drag down again.`;
@@ -329,16 +389,22 @@ RepaymentScheduleTests = {
                     .getRange(CardBalanceOverTimeTests.numRows, 5)
                     .getValue();
 
-                cbotTestSheet
-                    .getRange(CBOT_TOTAL_PAID_FORMULA_CELL)
-                    .autoFill(cbotTestSheet.getRange(3, 5, CardBalanceOverTimeTests.numRows - 2, 1),
-                        SpreadsheetApp.AutoFillSeries.DEFAULT_SERIES);
+                try {
+                    cbotTestSheet
+                        .getRange(CBOT_TOTAL_PAID_FORMULA_CELL)
+                        .autoFill(cbotTestSheet.getRange(3, 5, CardBalanceOverTimeTests.numRows - 2, 1),
+                            SpreadsheetApp.AutoFillSeries.DEFAULT_SERIES);
 
-                let finalBalance = cbotTestSheet
-                    .getRange(CardBalanceOverTimeTests.numRows, 5)
-                    .getValue();
+                    let finalBalance = cbotTestSheet
+                        .getRange(CardBalanceOverTimeTests.numRows, 5)
+                        .getValue();
 
-                if (finalBalance !== originalFinalBalance) {
+                    if (finalBalance !== originalFinalBalance) {
+                        result = false;
+                        errBuffer += `\n\t\t\tERROR: Total Paid to Date formula inconsistent or incorrect;`
+                            + `\n\t\t\t       Please check formula in ${CBOT_TOTAL_PAID_FORMULA_CELL} and drag down again.`;
+                    }
+                } catch (e) {
                     result = false;
                     errBuffer += `\n\t\t\tERROR: Total Paid to Date formula inconsistent or incorrect;`
                         + `\n\t\t\t       Please check formula in ${CBOT_TOTAL_PAID_FORMULA_CELL} and drag down again.`;
@@ -347,8 +413,21 @@ RepaymentScheduleTests = {
         }
 
         let message = `\t\t${result ? 'PASS' : 'FAIL'}: Is the Total Paid to Date formula`
-            + `\n\t\t     calculating balances correctly?`;
+            + `\n\t\t      calculating balances correctly?`;
         student.logFeedback(message + errBuffer);
         return result;
-    }
+    },
+
+    // CheckDateIncrement: function (student, cbotTestSheet) {
+    //     const isValidDate = (d) => {
+    //         if (Object.prototype.toString.call(d) != "[object Date]") {
+    //             return false;
+    //         }
+    //         else {
+    //             return !isNaN(d.getTime());
+    //         }
+    //     };
+
+
+    // }
 }
