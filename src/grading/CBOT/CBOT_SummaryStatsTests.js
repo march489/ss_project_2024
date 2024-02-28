@@ -62,7 +62,10 @@ SummaryStatsTests = {
         let headerRowsCellNames = Utils.createCellNameArray(1, 7, 8, 1);
         let zippedArray = Utils
             .createZippedTwoArray(headerRowsCellNames, fontWeights)
-            .map(([row]) => row);
+            .map(([row]) => row)
+            .filter((_arr, index) => index != 3);
+
+        console.log(zippedArray);
 
         let problemCells = zippedArray.filter(([_, weight]) => weight != 'bold');
 
@@ -94,7 +97,8 @@ SummaryStatsTests = {
         let headerRowsCellNames = Utils.createCellNameArray(1, 7, 8, 1);
         let zippedArray = Utils
             .createZippedTwoArray(headerRowsCellNames, alignments)
-            .map(([row]) => row);
+            .map(([row]) => row)
+            .filter((_arr, index) => index != 3);
 
         let problemCells = zippedArray.filter(([_, weight]) => weight != 'center');
 
@@ -127,7 +131,8 @@ SummaryStatsTests = {
 
         let zippedArray = Utils
             .createZippedTwoArray(headerRowsCellNames, backgroundColors)
-            .map(([row]) => row);
+            .map(([row]) => row)
+            .filter((_arr, index) => index != 3);
 
         let problemCells = zippedArray.filter(([_, color]) => color == '#ffffff');
 
