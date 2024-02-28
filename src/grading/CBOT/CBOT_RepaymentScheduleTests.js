@@ -1,4 +1,51 @@
 RepaymentScheduleTests = {
+    CheckDateIncrement: function (student, cbotTestSheet) {
+        const isValidDate = (d) => {
+            if (Object.prototype.toString.call(d) != '[object Date]') {
+                return false;
+            } else {
+                return !isNaN(d.getTime());
+            }
+        };
+
+        let result = true;
+        let errBuffer = '';
+
+        if (CardBalanceOverTimeTests.numRows <= 1) {
+            result = false;
+            errBuffer += `\n\t\t\tERROR: You don't have enough data`;
+        } else {
+            let cellNames = Utils
+                .createCellNameArray(2, 1, CardBalanceOverTimeTests.numRows - 1, 1);
+
+            let dates = cbotTestSheet
+                .getRange(2, 1, CardBalanceOverTimeTests.numRows - 1, 1)
+                .getValues();
+
+            let zippedArray = Utils
+                .createZippedTwoArray(cellNames, dates)
+                .map(([row]) => row);
+
+            for (const [index, [cell, date]] of zippedArray.entries()) {
+                if (index == 0) {
+                    continue;
+                } else {
+                    let [prevCell, prevDate] = zippedArray[index - 1];
+                    if (date - prevDate != MILLIS_PER_MONTH) {
+                        result = false;
+                        errBuffer += `\n\t\t\tERROR: ${prevDate} in ${prevCell} `
+                            + `\n\t\t\t       and ${date} in ${cell}`
+                            + `\n\t\t\t       are ${(date - prevDate) / MILLIS_PER_DAY} days apart`
+                    }
+                }
+            }
+        }
+
+        let message = `\t\t${result ? 'PASS' : 'FAIL'}: Are consecutive dates in Col A 30 days apart?`;
+        student.logFeedback(message + errBuffer);
+        return result;
+    },
+
     CheckFinalBalanceIsZero: function (student, cbotTestSheet) {
         let result = true;
         let errBuffer = '';
@@ -268,7 +315,7 @@ RepaymentScheduleTests = {
             }
         }
 
-        let message = `\t\t${result ? 'PASS' : 'FAIL'}: Is the Unpaid Balance formula calculating interest coreectly?`;
+        let message = `\t\t${result ? 'PASS' : 'FAIL'}: Is the Unpaid Balance formula consistent for all of Column B?`;
         student.logFeedback(message + errBuffer);
         return result;
     },
@@ -316,7 +363,7 @@ RepaymentScheduleTests = {
             }
         }
 
-        let message = `\t\t${result ? 'PASS' : 'FAIL'}: Is the Minimum Payment formula correct?`;
+        let message = `\t\t${result ? 'PASS' : 'FAIL'}: Is the Minimum Payment formula consistent for all of Column C?`;
         student.logFeedback(message + errBuffer);
         return result;
     },
@@ -364,7 +411,7 @@ RepaymentScheduleTests = {
             }
         }
 
-        let message = `\t\t${result ? 'PASS' : 'FAIL'}: Is the Balance After formula calculating balances correctly?`;
+        let message = `\t\t${result ? 'PASS' : 'FAIL'}: Is the Balance After formula consistent for all of Column D?`;
         student.logFeedback(message + errBuffer);
         return result;
     },
@@ -413,21 +460,8 @@ RepaymentScheduleTests = {
         }
 
         let message = `\t\t${result ? 'PASS' : 'FAIL'}: Is the Total Paid to Date formula`
-            + `\n\t\t      calculating balances correctly?`;
+            + `\n\t\t      consistent for all of Column E?`;
         student.logFeedback(message + errBuffer);
         return result;
-    },
-
-    // CheckDateIncrement: function (student, cbotTestSheet) {
-    //     const isValidDate = (d) => {
-    //         if (Object.prototype.toString.call(d) != "[object Date]") {
-    //             return false;
-    //         }
-    //         else {
-    //             return !isNaN(d.getTime());
-    //         }
-    //     };
-
-
-    // }
+    }
 }
