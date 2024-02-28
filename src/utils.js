@@ -1,5 +1,18 @@
 Utils = {
     /**
+     * An easy way to format floats as percentages in the feedback file.
+     * @param {float} val 
+     * @returns {string} -- value formatted as USD with commas and 2 decimal places. 
+     */
+    asPercent: function (val) {
+        if (val !== null && val !== undefined && typeof val === 'number') {
+            return `${String((100 * val).toFixed(3))}%`;
+        } else {
+            return '0.000%';
+        };
+    },
+
+    /**
      * An easy way to format floats as money in the feedback file.
      * @param {float} val 
      * @returns {string} -- value formatted as USD with commas and 2 decimal places. 

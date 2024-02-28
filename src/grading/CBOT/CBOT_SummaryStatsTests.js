@@ -168,8 +168,8 @@ SummaryStatsTests = {
             }
         }
 
-        let message = `\t\t${result ? 'PASS' : 'FAIL'}: ARe Months in Repayment calculated correctly with a valid`
-            + `\n\t\t     formula?`;
+        let message = `\t\t${result ? 'PASS' : 'FAIL'}: Are Months in Repayment calculated correctly with a valid`
+            + `\n\t\t      formula?`;
         student.logFeedback(message + errBuffer);
         return result;
     },
@@ -215,4 +215,87 @@ SummaryStatsTests = {
         student.logFeedback(message + errBuffer);
         return result;
     },
+
+    CheckTotalInterest: function (student, cbotTestSheet) {
+        let result = true;
+        let errBuffer = '';
+
+        if (CardBalanceOverTimeTests.numRows <= 1) {
+            result = false;
+            errBuffer += `\n\t\t\tERROR: You don't have enough data`
+        } else {
+            let totalInterestCell = cbotTestSheet
+                .getRange(CBOT_TOTAL_INTEREST_CELL);
+            let actualTotalInterest = totalInterestCell
+                .getValue();
+
+            let totalPaid = cbotTestSheet
+                .getRange(2, 3, CardBalanceOverTimeTests.numRows - 1, 1)
+                .getValues()
+                .flat()
+                .reduce((acc, val) => acc + val, 0);
+
+            let amazonTotal = cbotTestSheet
+                .getRange(CBOT_AMAZON_TOTAL_CELL)
+                .getValue();
+
+            if (Math.abs(actualTotalInterest - (totalPaid - amazonTotal)) > TOLERANCE) {
+                result = false;
+                errBuffer += `\n\t\t\tERROR: Total Interest incorrect, got ${Utils.asMoney(actualTotalInterest)}`
+                    + `\n\t\t\t      epected ${Utils.asMoney(totalPaid - amazonTotal)}`;
+            } else if (String(totalInterestCell.getFormula()) === '') {
+                result = false;
+                errBuffer += `\n\t\t\tERROR: Total Amount is not calculated with a formula`;
+            } else {
+                // do nothing, you're good
+            }
+        }
+
+        let message = `\t\t${result ? 'PASS' : 'FAIL'}: Is Total Interest calculated correctly with a valid formula?`;
+        student.logFeedback(message + errBuffer);
+        return result;
+    },
+
+    CheckEffectiveInterest: function (student, cbotTestSheet) {
+        let result = true;
+        let errBuffer = '';
+
+        if (CardBalanceOverTimeTests.numRows <= 1) {
+            result = false;
+            errBuffer += `\n\t\t\tERROR: You don't have enough data`
+        } else {
+            let effectiveInterestCell = cbotTestSheet
+                .getRange(CBOT_EFFECTIVE_INTEREST_CELL);
+            let actualEffectiveInterest = effectiveInterestCell
+                .getValue();
+
+            let totalPaid = cbotTestSheet
+                .getRange(2, 3, CardBalanceOverTimeTests.numRows - 1, 1)
+                .getValues()
+                .flat()
+                .reduce((acc, val) => acc + val, 0);
+
+            let amazonTotal = cbotTestSheet
+                .getRange(CBOT_AMAZON_TOTAL_CELL)
+                .getValue();
+
+            let expectedEffectiveInterest = (totalPaid - amazonTotal) / amazonTotal;
+
+            if (Math.abs(actualEffectiveInterest - expectedEffectiveInterest) > TOLERANCE) {
+                result = false;
+                errBuffer += `\n\t\t\tERROR: Effective Interest incorrect, got ${Utils.asPercent(actualEffectiveInterest)}`
+                    + `\n\t\t\t      epected ${Utils.asPercent(expectedEffectiveInterest)}`;
+            } else if (String(effectiveInterestCell.getFormula()) === '') {
+                result = false;
+                errBuffer += `\n\t\t\tERROR: Effective Interest is not calculated with a formula`;
+            } else {
+                // do nothing, you're good
+            }
+        }
+
+        let message = `\t\t${result ? 'PASS' : 'FAIL'}: Is Effective Interest calculated correctly with a valid`
+            + `\n\t\t     formula?`;
+        student.logFeedback(message + errBuffer);
+        return result;
+    }
 }
