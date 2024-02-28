@@ -1,10 +1,10 @@
 SummaryStatsTests = {
-     /**
-     * Checks if the headings are present and spelled correctly
-     * @param {Student} student
-     * @param {GoogleAppsScript.Spreadsheet.Sheet} cbotTestSheet
-     * @returns {bool}
-     */
+    /**
+    * Checks if the headings are present and spelled correctly
+    * @param {Student} student
+    * @param {GoogleAppsScript.Spreadsheet.Sheet} cbotTestSheet
+    * @returns {bool}
+    */
     CheckHeadings: function (student, cbotTestSheet) {
         let result = true;
         let errBuffer = '';
@@ -46,13 +46,13 @@ SummaryStatsTests = {
         return result;
     },
 
-     /**
-     * Checks if the column headings are all bolded
-     * @param {Student} student
-     * @param {GoogleAppsScript.Spreadsheet.Sheet} cbotTestSheet
-     * @returns {bool}
-     */
-     CheckHeadersBolded: function (student, cbotTestSheet) {
+    /**
+    * Checks if the column headings are all bolded
+    * @param {Student} student
+    * @param {GoogleAppsScript.Spreadsheet.Sheet} cbotTestSheet
+    * @returns {bool}
+    */
+    CheckHeadersBolded: function (student, cbotTestSheet) {
         let result = true;
         let errBuffer = "";
 
@@ -142,6 +142,76 @@ SummaryStatsTests = {
         }
 
         let message = `\t\t${result ? 'PASS' : 'FAIL'}: Did you change the background color in the header column?`;
+        student.logFeedback(message + errBuffer);
+        return result;
+    },
+
+    CheckMonthsInRepayment: function (student, cbotTestSheet) {
+        let result = true;
+        let errBuffer = '';
+
+        if (CardBalanceOverTimeTests.numRows <= 1) {
+            result = false;
+            errBuffer += `\n\t\t\tERROR: You don't have enough data`
+        } else {
+            let monthsCell = cbotTestSheet
+                .getRange(CBOT_MONTHS_REPAYMENT_CELL);
+
+            if (monthsCell.getValue() != CardBalanceOverTimeTests.numRows - 1) {
+                result = false;
+                errBuffer += `\n\t\t\tERROR: Months in repayment is incorrect`;
+            } else if (String(monthsCell.getFormula()) === '') {
+                result = false;
+                errBuffer += `\n\t\t\tERROR: Months in repayment is not calculated with a formula`;
+            } else {
+                // do nothing, you're good
+            }
+        }
+
+        let message = `\t\t${result ? 'PASS' : 'FAIL'}: ARe Months in Repayment calculated correctly with a valid`
+            + `\n\t\t     formula?`;
+        student.logFeedback(message + errBuffer);
+        return result;
+    },
+
+    CheckTotalAmountPaid: function (student, cbotTestSheet) {
+        let result = true;
+        let errBuffer = '';
+
+        if (CardBalanceOverTimeTests.numRows <= 1) {
+            result = false;
+            errBuffer += `\n\t\t\tERROR: You don't have enough data`
+        } else {
+            let totalAmountCell = cbotTestSheet
+                .getRange(CBOT_TOTAL_AMT_PAID_CELL);
+            let totalAmount = totalAmountCell
+                .getValue();
+
+            let expectedTotalVer1 = cbotTestSheet
+                .getRange(CardBalanceOverTimeTests.numRows, 5, 1, 1)
+                .getValue();
+
+            let expectedTotalVer2 = cbotTestSheet
+                .getRange(2, 3, CardBalanceOverTimeTests.numRows - 1, 1)
+                .getValues()
+                .flat()
+                .reduce((acc, val) => acc + val, 0);
+
+            if (Math.abs(totalAmount - expectedTotalVer1) > TOLERANCE) {
+                result = false;
+                errBuffer += `\n\t\t\tERROR: Total Amount doesn't match last entry in Col E`;
+            } else if (Math.abs(totalAmount - expectedTotalVer2) > TOLERANCE) {
+                result = false;
+                errBuffer += `\n\t\t\tERROR: Total Amount doesn't match sum of payments in Col C`;
+            } else if (String(totalAmountCell.getFormula()) === '') {
+                result = false;
+                errBuffer += `\n\t\t\tERROR: Total Amount is not calculated with a formula`;
+            } else {
+                // do nothing, you're good
+            }
+        }
+
+        let message = `\t\t${result ? 'PASS' : 'FAIL'}: Is Total Amount calculated correctly with a valid formula?`;
         student.logFeedback(message + errBuffer);
         return result;
     },

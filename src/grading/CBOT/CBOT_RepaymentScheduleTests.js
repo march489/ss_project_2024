@@ -322,7 +322,7 @@ RepaymentScheduleTests = {
 
     CheckMinPaymentInputs: function (student, cbotTestSheet) {
         let result = true;
-        let errBuffer = false;
+        let errBuffer = '';
 
         if (CardBalanceOverTimeTests.numRows <= 1) {
             result = false;
