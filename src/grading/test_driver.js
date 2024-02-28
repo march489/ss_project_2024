@@ -70,6 +70,7 @@ TestDriver = {
 
         if (GRADE_CBOT) {
             TestDriver.runCbotTests(student);
+            TestDriver.runExtraTests(student);
         }
 
         student.finalizeTesting();
@@ -97,6 +98,10 @@ TestDriver = {
         return finalResult;
     },
 
+    /**
+     * Runs the Student Data tests on the student file.
+     * @param {Student} student 
+     */
     runStudentDataTests: function (student) {
         MasterSpreadsheet.createStudentDataTestSheet(student);
         student.logFeedback("\nRunning Student Data Tests...");
@@ -113,6 +118,10 @@ TestDriver = {
         return finalResult;
     },
 
+    /**
+     * Runs the Card Balance Over Time tests on the student file.
+     * @param {Student} student 
+     */
     runCbotTests: function (student) {
         MasterSpreadsheet.createCbotTestSheet(student);
         student.logFeedback("\nRunning CBOT Tests...");
@@ -125,6 +134,27 @@ TestDriver = {
         }
 
         MasterSpreadsheet.recordCbotTestResults(student, results);
+
+        let finalResult = results.reduce((bA, bB) => bA && bB, true);
+        student.logFeedback(`CBOT Tests: ${finalResult ? 'ALL TESTS PASS' : 'INCOMPLETE'}`);
+        return finalResult;
+    },
+
+    /**
+     * Runs the Extra tests on the student file.
+     * @param {Student} student 
+     */
+    runExtraTests: function (student) {
+        student.logFeedback("\nRunning Extra Tests...");
+        const results = new Array();
+
+        for (const [_name, f] of Object.entries(ExtraTests)) {
+            if (typeof f === 'function') {
+                results.push(f.call(ExtraTests, student, MasterSpreadsheet.getCbotTestSheet()));
+            }
+        }
+
+        MasterSpreadsheet.recordExtraTestResults(student, results);
 
         let finalResult = results.reduce((bA, bB) => bA && bB, true);
         student.logFeedback(`CBOT Tests: ${finalResult ? 'ALL TESTS PASS' : 'INCOMPLETE'}`);

@@ -81,7 +81,9 @@ MasterSpreadsheet = {
     },
 
     /**
-     * 
+     * If it exists, makes a copy of the student's Amazon Purchases sheet
+     * and copies it to the Master Spreadsheet. All tests are run on the copy,
+     * not on the student's original. 
      * @param {Student} student 
      */
     createAmazonTestSheet: function (student) {
@@ -102,11 +104,22 @@ MasterSpreadsheet = {
             .getSheetByName(AMAZON_SHEET_NAME);
     },
 
+    /**
+     * Records a student's results to the Amazon Purchases tests
+     * @param {Student} student 
+     * @param {bool[]} results 
+     */
     recordAmazonPurchaseTestResults: function (student, results) {
         MasterSpreadsheet.stampAmazonResultStudentChecklist(student, results);
-        // TODO implement stampGradeSheet
+        student.recordTestResults(results);
     },
 
+    /**
+     * Stamps Y/N on the student's Checklist tab based on their 
+     * Amazon test results
+     * @param {Student} student 
+     * @param {bool[]} results 
+     */
     stampAmazonResultStudentChecklist: function (student, results) {
         let stampArray = results
             .map(result => result ? ["Y"] : ["N"]);
@@ -139,7 +152,7 @@ MasterSpreadsheet = {
 
     recordStudentDataTestResults: function (student, results) {
         MasterSpreadsheet.stampStudentDataResultStudentChecklist(student, results);
-        // TODO implement stampGradeSheet
+        student.recordTestResults(results);
     },
 
     stampStudentDataResultStudentChecklist: function (student, results) {
@@ -173,7 +186,7 @@ MasterSpreadsheet = {
 
     recordCbotTestResults: function (student, results) {
         MasterSpreadsheet.stampCbotResultStudentChecklist(student, results);
-        // TODO implement stampGradeSheet
+        student.recordTestResults(results);
     },
 
     stampCbotResultStudentChecklist: function (student, results) {
@@ -189,6 +202,27 @@ MasterSpreadsheet = {
             .spreadsheet
             .getSheetByName(CHECKLIST_SHEET_NAME)
             .getRange(CBOT_STAMP_CELL_RANGE)
+            .setValues(stampArray);
+    },
+
+    recordExtraTestResults (student, results) {
+        MasterSpreadsheet.stampExtraResultsStudentChecklist(student, results);
+        student.recordTestResults(results);
+    },
+
+    stampExtraResultsStudentChecklist: function (student, results) {
+        let stampArray = results
+            .map(result => result ? ["Y"] : ["N"]);
+
+        // adjust for partial development
+        while (stampArray.length < EXTRA_STAMP_RANGE_SIZE) {
+            stampArray.push([""]);
+        }
+
+        student
+            .spreadsheet
+            .getSheetByName(CHECKLIST_SHEET_NAME)
+            .getRange(EXTRA_STAMP_RANGE)
             .setValues(stampArray);
     }
 }

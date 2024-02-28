@@ -3,6 +3,7 @@ class Student {
         this.driveAppFile = driveAppFile;
         this.spreadsheet = SpreadsheetApp.openById(this.driveAppFile.getId());
         this.url = driveAppFile.getUrl();
+        this.results = [];
         this.ExtractDataFromFile();
     }
 
@@ -62,4 +63,11 @@ class Student {
             .setFormula(`=HYPERLINK("${this.feedbackFile.feedbackFile.getUrl()}", "see detailed feedback")`);
     }
 
+    /**
+     * Saves a copy of the test results to student data. 
+     * @param {bool[]} testResults 
+     */
+    recordTestResults(testResults) {
+        this.results.push.apply(testResults);
+    }
 }
