@@ -65,8 +65,6 @@ SummaryStatsTests = {
             .map(([row]) => row)
             .filter((_arr, index) => index != 3);
 
-        console.log(zippedArray);
-
         let problemCells = zippedArray.filter(([_, weight]) => weight != 'bold');
 
         if (problemCells.length > 0) {

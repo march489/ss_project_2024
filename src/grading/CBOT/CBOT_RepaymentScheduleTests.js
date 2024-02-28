@@ -320,6 +320,64 @@ RepaymentScheduleTests = {
         return result;
     },
 
+    CheckMinPaymentInputs: function (student, cbotTestSheet) {
+        let result = true;
+        let errBuffer = false;
+
+        if (CardBalanceOverTimeTests.numRows <= 1) {
+            result = false;
+            errBuffer += `\n\t\t\tERROR: You don't have enough data`;
+        } else {
+            let originalAmazonFormula = cbotTestSheet
+                .getRange(CBOT_AMAZON_TOTAL_CELL)
+                .getFormula();
+            let originalAmazonValue = cbotTestSheet
+                .getRange(CBOT_AMAZON_TOTAL_CELL)
+                .getValue();
+
+            cbotTestSheet
+                .getRange(CBOT_AMAZON_TOTAL_CELL)
+                .setValue(1000);
+
+            let highTestValue = cbotTestSheet
+                .getRange(CBOT_MIN_PAYMENT_FORMULA_CELL)
+                .getValue();
+
+            if (Math.abs(highTestValue - CBOT_MIN_PAYMENT_PERCENTAGE * 1000) > TOLERANCE) {
+                result = false;
+                errBuffer += `\n\t\t\tERROR: Minimum payment formula in ${CBOT_MIN_PAYMENT_FORMULA_CELL} should return ${Utils.asMoney(CBOT_MIN_PAYMENT_PERCENTAGE * 1000)}`
+                    + `\n\t\t\t      for an unpaid balance of ${Utils.asMoney(1000)}, but instead got ${highTestValue}`;
+            }
+
+            cbotTestSheet
+                .getRange(CBOT_AMAZON_TOTAL_CELL)
+                .setValue(500);
+
+            let lowTestValue = cbotTestSheet
+                .getRange(CBOT_MIN_PAYMENT_FORMULA_CELL)
+                .getValue();
+
+            if (Math.abs(lowTestValue - CBOT_MIN_PAYMENT_AMOUNT) > TOLERANCE) {
+                result = false;
+                errBuffer += `\n\t\t\tERROR: Minimum payment formula in ${CBOT_MIN_PAYMENT_FORMULA_CELL} should return ${Utils.asMoney(CBOT_MIN_PAYMENT_AMOUNT)}`
+                    + `\n\t\t\t      for an unpaid balance of ${Utils.asMoney(500)}, but instead got ${lowTestValue}`;
+            }
+
+            // reset & clean up
+            cbotTestSheet
+                .getRange(CBOT_AMAZON_TOTAL_CELL)
+                .setFormula(originalAmazonFormula);
+
+            if (cbotTestSheet.getRange(CBOT_AMAZON_TOTAL_CELL).getValue() != originalAmazonValue) {
+                cbotTestSheet.getRange(CBOT_AMAZON_TOTAL_CELL).setValue(originalAmazonValue);
+            }
+        }
+
+        let message = `\t\t${result ? 'PASS' : 'FAIL'}: Does the Minimum Payment formula adjust for different inputs?`;
+        student.logFeedback(message + errBuffer);
+        return result;
+    },
+
     CheckMinPaymentFormula: function (student, cbotTestSheet) {
         let result = true;
         let errBuffer = '';
