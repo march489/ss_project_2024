@@ -224,5 +224,9 @@ MasterSpreadsheet = {
             .getSheetByName(CHECKLIST_SHEET_NAME)
             .getRange(EXTRA_STAMP_RANGE)
             .setValues(stampArray);
+    },
+
+    recordGrades: function (student) {
+        // TODO implement
     }
 }

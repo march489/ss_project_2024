@@ -56,11 +56,13 @@ class Student {
      * Clean up testing, flush feedback to .txt file
      */
     finalizeTesting() {
+        console.log(this.results); // FOR DEBUGGING --- TODO REMOVE
         this.feedbackFile.flush();
         this.spreadsheet
             .getSheetByName(CHECKLIST_SHEET_NAME)
             .getRange(FEEDBACK_FILE_STAMP_CELL)
             .setFormula(`=HYPERLINK("${this.feedbackFile.feedbackFile.getUrl()}", "see detailed feedback")`);
+        MasterSpreadsheet.recordGrades(this);
     }
 
     /**
@@ -68,6 +70,6 @@ class Student {
      * @param {bool[]} testResults 
      */
     recordTestResults(testResults) {
-        this.results.push.apply(testResults);
+        this.results.push.apply(this.results, testResults);
     }
 }

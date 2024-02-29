@@ -275,7 +275,7 @@ APTDataTableCompleteTests = {
 
             for (let index = 0; index < APTDataTableCompleteTests.numRows - 2; index++) {
                 if (result) {
-                    result &= unitPrices[index] >= unitPrices[index + 1];
+                    result = result && unitPrices[index] >= unitPrices[index + 1];
                 } else {
                     break;
                 }
