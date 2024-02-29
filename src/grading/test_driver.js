@@ -57,7 +57,7 @@ TestDriver = {
 
     GradeStudent: function (student) {
         if (SKIP_NO_CHANGES) {
-            if (student.isLastEditByStudent()) {
+            if (!student.isLastEditByStudent()) {
                 console.log(`Skipping ${student.name}`);
                 return; // early exit
             }
