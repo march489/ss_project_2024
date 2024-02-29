@@ -56,6 +56,14 @@ TestDriver = {
     },
 
     GradeStudent: function (student) {
+        if (SKIP_NO_CHANGES) {
+            if (student.isLastEditByStudent()) {
+                console.log(`Skipping ${student.name}`);
+                return; // early exit
+            }
+        }
+
+        // otherwise, keep going
         MasterSpreadsheet.initialize();
         let datetime = student.prepFeedbackFile();
         student.lastRun = datetime;
