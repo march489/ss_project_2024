@@ -30,7 +30,7 @@ PassChemistryTests = {
                     return Math.abs(expected - actual) > TOLERANCE;
                 } else {
                     // both strings
-                    return expected !== actual;
+                    return expected.toLowerCase().replaceAll(/\s/gi, '') !== actual.toLowerCase().replaceAll(/\s/gi, '');
                 }
             });
 
