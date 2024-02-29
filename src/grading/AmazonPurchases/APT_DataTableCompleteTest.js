@@ -277,6 +277,7 @@ APTDataTableCompleteTests = {
                 if (result) {
                     result = result && unitPrices[index] >= unitPrices[index + 1];
                 } else {
+                    errBuffer += `\n\t\t\tERROR: ${Utils.asMoney(unitPrices[index-1])} is not greater than ${Utils.asMoney(unitPrices[index])}`
                     break;
                 }
             }

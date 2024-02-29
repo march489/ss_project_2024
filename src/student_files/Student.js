@@ -56,7 +56,6 @@ class Student {
      * Clean up testing, flush feedback to .txt file
      */
     finalizeTesting() {
-        console.log(this.results); // FOR DEBUGGING --- TODO REMOVE
         this.feedbackFile.flush();
         this.spreadsheet
             .getSheetByName(CHECKLIST_SHEET_NAME)

@@ -11,3 +11,7 @@ function Run() {
 function UpdateFiles() {
     Update.runUpdate();
 }
+
+function SetupGradeSheet() {
+    MasterSpreadsheet.setUpGradesheet();
+}

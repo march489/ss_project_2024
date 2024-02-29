@@ -58,6 +58,7 @@ TestDriver = {
     GradeStudent: function (student) {
         MasterSpreadsheet.initialize();
         let datetime = student.prepFeedbackFile();
+        student.lastRun = datetime;
         console.log(student.name);
 
         if (GRADE_AMAZON) {
