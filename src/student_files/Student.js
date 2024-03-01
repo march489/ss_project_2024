@@ -41,6 +41,7 @@ class Student {
      * @returns {string} -- returns the datetime that the test run began
      */
     prepFeedbackFile () {
+        this.feedbackFile.reset();
         return this.feedbackFile.createHeader(this.name, this.url);
     }
 

@@ -13,10 +13,16 @@ class FeedbackFile {
         } else {
             this.feedbackFile = this.createFeedbackFile();
         }
+    }
 
+    /**
+     * Whipes the feedback file
+     */
+    reset() {
         this.clear();
         this.buffer = "";
     }
+
     /**
      * Appends the header to the feedback file buffer, correctly formatted,
      * but doesn't write to the file itself (this.flush()). Returns the datetime
