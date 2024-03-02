@@ -153,7 +153,7 @@ Integrity = {
             Integrity.log('');
         }
 
-        return alarmingRevisions.length > 0;
+        return alarmingRevisions.length == 0;
     },
 
     CheckPermissions: function (student) {
@@ -174,7 +174,7 @@ Integrity = {
             Integrity.log('');
         }
 
-        return alarmingPermissions.length > 0;
+        return alarmingPermissions.length == 0;
     },
 
     CheckViewers: function (student) {
@@ -194,7 +194,7 @@ Integrity = {
             Integrity.log('');
         }
 
-        return alarmingViewers.length > 0;
+        return alarmingViewers.length == 0;
     },
 
     CheckEditors: function (student) {
@@ -214,7 +214,7 @@ Integrity = {
             Integrity.log('');
         }
 
-        return alarmingEditors.length > 0;
+        return alarmingEditors.length == 0;
     },
 
     CheckOwner: function (student) {
